@@ -1,0 +1,6 @@
+18-09-2024 01:45:52: General Functions  :- sp_MastersError : Invalid column name 'sal_rot_ID'. - 
+18-09-2024 17:56:49: General Functions  :- sp_MerchandisingError : Incorrect syntax near '<'. - 
+18-09-2024 18:27:09: General Functions  :- sp_MerchandisingError : Incorrect syntax near '<'. - 
+18-09-2024 18:52:26: General Functions  :- sp_MerchandisingError : Incorrect syntax near '<'. - 
+18-09-2024 19:37:24: General Functions  :- sp_MastersError : Invalid column name 'sal_rot_ID'. - 
+18-09-2024 19:42:54: General Functions  :- sp_MastersError : Invalid column name 'sal_rot_ID'. - 

@@ -1,0 +1,5 @@
+12-09-2024 10:48:43: General Functions  :- sp_ExcelReportError : An expression of non-boolean type specified in a context where a condition is expected, near ','. - 
+12-09-2024 10:49:11: General Functions  :- sp_ExcelReportError : An expression of non-boolean type specified in a context where a condition is expected, near ','. - 
+12-09-2024 10:49:25: General Functions  :- sp_ExcelReportError : An expression of non-boolean type specified in a context where a condition is expected, near ','. - 
+12-09-2024 10:49:43: General Functions  :- sp_ExcelReportError : An expression of non-boolean type specified in a context where a condition is expected, near ','. - 
+12-09-2024 10:55:00: General Functions  :- sp_ExcelReportError : An expression of non-boolean type specified in a context where a condition is expected, near ','. - 

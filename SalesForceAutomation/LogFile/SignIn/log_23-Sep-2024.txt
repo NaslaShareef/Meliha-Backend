@@ -1,0 +1,15 @@
+23-Sep-2024 16:38:34-Client IP ::1
+23-Sep-2024 16:38:34-Login Click - Audit successful
+23-Sep-2024 16:38:34-Login Click BO_Digits/en/ChartDashboard.aspx
+23-Sep-2024 16:38:34-Login ClickThread was being aborted.
+23-Sep-2024 16:38:34-Login Click BO_Digits/en/ChartDashboard.aspx
+23-Sep-2024 18:27:42-Client IP ::1
+23-Sep-2024 18:27:43-Login Click - Audit successful
+23-Sep-2024 18:27:43-Login Click BO_Digits/en/ChartDashboard.aspx
+23-Sep-2024 18:27:43-Login ClickThread was being aborted.
+23-Sep-2024 18:27:43-Login Click BO_Digits/en/ChartDashboard.aspx
+23-Sep-2024 20:51:34-Client IP ::1
+23-Sep-2024 20:51:35-Login Click - Audit successful
+23-Sep-2024 20:51:35-Login Click BO_Digits/en/ChartDashboard.aspx
+23-Sep-2024 20:51:35-Login ClickThread was being aborted.
+23-Sep-2024 20:51:35-Login Click BO_Digits/en/ChartDashboard.aspx

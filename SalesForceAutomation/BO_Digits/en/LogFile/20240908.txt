@@ -1,0 +1,26 @@
+08-09-2024 11:33:20: General Functions  :- sp_KPI_DashboardError : An expression of non-boolean type specified in a context where a condition is expected, near 'Group'. - 
+08-09-2024 11:34:40: General Functions  :- sp_KPI_DashboardError : An expression of non-boolean type specified in a context where a condition is expected, near 'Group'. - 
+08-09-2024 11:34:43: General Functions  :- sp_KPI_DashboardError : An expression of non-boolean type specified in a context where a condition is expected, near 'Group'. - 
+08-09-2024 11:37:53: General Functions  :- sp_KPI_DashboardError : An expression of non-boolean type specified in a context where a condition is expected, near 'Group'. - 
+08-09-2024 11:41:01: General Functions  :- sp_KPI_DashboardError : Incorrect syntax near the keyword 'Group'. - 
+08-09-2024 11:41:13: General Functions  :- sp_KPI_DashboardError : Incorrect syntax near the keyword 'Group'. - 
+08-09-2024 11:41:14: General Functions  :- sp_KPI_DashboardError : Incorrect syntax near the keyword 'Group'. - 
+08-09-2024 11:41:24: General Functions  :- sp_KPI_DashboardError : Incorrect syntax near the keyword 'Group'. - 
+08-09-2024 11:41:27: General Functions  :- sp_KPI_DashboardError : Incorrect syntax near the keyword 'Group'. - 
+08-09-2024 11:42:17: General Functions  :- sp_KPI_DashboardError : Incorrect syntax near the keyword 'Group'. - 
+08-09-2024 11:42:25: General Functions  :- sp_KPI_DashboardError : Incorrect syntax near the keyword 'Group'. - 
+08-09-2024 11:43:06: General Functions  :- sp_KPI_DashboardError : Incorrect syntax near the keyword 'Group'. - 
+08-09-2024 11:43:30: General Functions  :- sp_KPI_DashboardError : Incorrect syntax near the keyword 'Group'. - 
+08-09-2024 11:43:33: General Functions  :- sp_KPI_DashboardError : Incorrect syntax near the keyword 'Group'. - 
+08-09-2024 11:43:37: General Functions  :- sp_KPI_DashboardError : Incorrect syntax near the keyword 'Group'. - 
+08-09-2024 11:44:37: General Functions  :- sp_KPI_DashboardError : Incorrect syntax near the keyword 'Group'. - 
+08-09-2024 11:44:41: General Functions  :- sp_KPI_DashboardError : Incorrect syntax near the keyword 'Group'. - 
+08-09-2024 11:44:47: General Functions  :- sp_KPI_DashboardError : Incorrect syntax near the keyword 'Group'. - 
+08-09-2024 11:56:07: General Functions  :- sp_MastersError : Invalid column name 'sal_rot_ID'. - 
+08-09-2024 11:56:13: General Functions  :- sp_Merchandising_UOMError : Incorrect syntax near ','. - 
+08-09-2024 11:56:19: General Functions  :- sp_MastersError : Invalid column name 'sal_rot_ID'. - 
+08-09-2024 11:56:49: General Functions  :- sp_Merchandising_UOMError : Incorrect syntax near ','. - 
+08-09-2024 11:56:53: General Functions  :- sp_MastersError : Invalid column name 'sal_rot_ID'. - 
+08-09-2024 11:56:57: General Functions  :- sp_Merchandising_UOMError : Incorrect syntax near ','. - 
+08-09-2024 11:58:59: General Functions  :- sp_MastersError : Invalid column name 'sal_rot_ID'. - 
+08-09-2024 12:01:14: General Functions  :- sp_MastersError : Invalid column name 'sal_rot_ID'. - 

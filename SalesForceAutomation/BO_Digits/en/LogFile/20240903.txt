@@ -1,0 +1,4 @@
+03-09-2024 11:15:29: General Functions  :- sp_KPI_DashboardError : Incorrect syntax near the keyword 'Group'. - 
+03-09-2024 11:15:44: General Functions  :- sp_KPI_DashboardError : Incorrect syntax near the keyword 'Group'. - 
+03-09-2024 11:15:48: General Functions  :- sp_KPI_DashboardError : Incorrect syntax near the keyword 'Group'. - 
+03-09-2024 11:15:50: General Functions  :- sp_KPI_DashboardError : Incorrect syntax near the keyword 'Group'. - 

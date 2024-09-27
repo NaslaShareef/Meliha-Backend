@@ -1,0 +1,1 @@
+09-09-2024 20:16:14: General Functions  :- sp_MastersError : Invalid column name 'sal_rot_ID'. - 

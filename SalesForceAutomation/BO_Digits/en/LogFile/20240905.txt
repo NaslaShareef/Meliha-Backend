@@ -1,0 +1,2 @@
+05-09-2024 12:21:34: General Functions  :- sp_MastersError : Invalid column name 'sal_rot_ID'. - 
+05-09-2024 17:48:16: ExcelUpload.aspx lnkValidate_Click() :- Error : Could not find file 'A:\SFA Meliha (2)\SFA Meliha\SalesForceAutomation\App_Data\RadUploadTemp\1725538453928Sales Order Meliha.xlsx.tmp'. - 
