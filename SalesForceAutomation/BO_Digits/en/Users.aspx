@@ -81,7 +81,14 @@
                                                         ImageUrl="../assets/media/icons/duotune/General/Workflow.svg"></asp:ImageButton>
                                                 </ItemTemplate>
                                             </telerik:GridTemplateColumn>
-                                            
+
+                                            <telerik:GridTemplateColumn HeaderStyle-Width="80px" AllowFiltering="false" HeaderText="CC Settings" HeaderStyle-Font-Size="Smaller" HeaderStyle-Font-Bold="true">
+                                                <ItemTemplate>
+                                                    <asp:ImageButton CommandName="CCSettings" ID="CCSettings" Visible="true" AlternateText="CCSettings" runat="server"
+                                                        ImageUrl="../assets/media/icons/settingssmall.png" Width="22px" Height="22px"></asp:ImageButton>
+                                                </ItemTemplate>
+                                            </telerik:GridTemplateColumn>
+
                                             <telerik:GridBoundColumn DataField="FirstName" AllowFiltering="true" HeaderStyle-Width="100px"
                                                 HeaderStyle-Font-Size="Smaller" HeaderText="First Name" FilterControlWidth="100%"
                                                 CurrentFilterFunction="Contains" AutoPostBackOnFilter="true" ShowFilterIcon="false"

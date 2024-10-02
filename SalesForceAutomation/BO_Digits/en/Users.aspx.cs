@@ -96,6 +96,21 @@ namespace SalesForceAutomation.BO_Digits.en
                 }
                 
             }
+            if (e.CommandName.Equals("CCSettings"))
+            {
+                GridDataItem dataItem = e.Item as GridDataItem;
+                string ID = dataItem.GetDataKeyValue("UserId").ToString();
+                DataTable lstUserName = ObjclsFrms.loadList("SelectUserNameByUserID", "sp_Masters", ID.ToString());
+                if (lstUserName.Rows.Count > 0)
+                {
+                    string ids = lstUserName.Rows[0]["ID"].ToString();
+                    Response.Redirect("CustomerConnectSettings.aspx?UID=" + ids);
+                }
+                else
+                {
+
+                }
+            }
 
         }
 
