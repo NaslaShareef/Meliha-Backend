@@ -15,6 +15,15 @@ namespace SalesForceAutomation.BO_Digits.en
     {
 
         /// <summary>
+        /// lblLicNum control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblLicNum;
+
+        /// <summary>
         /// lblLicKey control.
         /// </summary>
         /// <remarks>
@@ -60,13 +69,22 @@ namespace SalesForceAutomation.BO_Digits.en
         protected global::System.Web.UI.WebControls.Label lblConNum;
 
         /// <summary>
-        /// lblAppUsr control.
+        /// lblType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblAppUsr;
+        protected global::System.Web.UI.WebControls.Label lblType;
+
+        /// <summary>
+        /// lblStatus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblStatus;
 
         /// <summary>
         /// lblRoute control.

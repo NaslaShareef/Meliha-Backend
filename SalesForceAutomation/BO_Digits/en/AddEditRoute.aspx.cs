@@ -13,6 +13,14 @@ using Telerik.Web.UI;
 using static Stimulsoft.Report.Func;
 using Telerik.Windows.Documents.Spreadsheet.Expressions.Functions;
 using SalesForceAutomation.Admin;
+using System.Configuration;
+using System.IO;
+using System.Net;
+using System.Text;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using GoogleApi.Entities.Common.Enums;
+
 
 namespace SalesForceAutomation.BO_Digits.en
 {
@@ -50,6 +58,217 @@ namespace SalesForceAutomation.BO_Digits.en
             }
         }
 
+        public string WebServiceCall(string URL, string jsonData)
+        {
+
+            try
+            {
+
+                if (jsonData != null)
+                {
+                    // Create a request using a URL that can receive a post.
+                    WebRequest request = WebRequest.Create(URL);
+                    // Set the Method property of the request to POST.
+                    request.Method = "POST";
+                    request.ContentType = "application/json";
+
+                    byte[] postData = Encoding.UTF8.GetBytes(jsonData);
+
+                    // Set the ContentLength property of the request to the length of the data
+                    request.ContentLength = postData.Length;
+
+                    // Get the request stream and write the data to it
+                    using (Stream requestStream = request.GetRequestStream())
+                    {
+                        requestStream.Write(postData, 0, postData.Length);
+                    }
+
+                    WebResponse response = request.GetResponse();
+                    // Display the status.
+                    Console.WriteLine(((HttpWebResponse)response).StatusDescription);
+
+                    // Get the stream containing content returned by the server.
+                    // The using block ensures the stream is automatically closed.
+                    using (Stream dataStream = response.GetResponseStream())
+                    {
+                        // Open the stream using a StreamReader for easy access.
+                        StreamReader reader = new StreamReader(dataStream);
+                        // Read the content.
+                        string responseFromServer = reader.ReadToEnd();
+                        // Display the content.
+                        // dm.TraceService("[" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + "] @ " + " DataLake_Service WebServiceCall Success => " + responseFromServer);
+                        response.Close();
+                        return responseFromServer;
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                String innerMessage = (ex.InnerException != null) ? ex.InnerException.Message : "";
+                ObjclsFrms.TraceService(UICommon.GetLogFileName() + "  ListRoute.aspx - WebServiceCall()  , " + "Error : " + ex.Message.ToString() + " - " + innerMessage);
+                return ex.Message.ToString();
+            }
+        }
+        public void LicenseCounts(string LicenseKey, string Platform, string IsStatusChange)
+        {
+            ObjclsFrms.TraceService(UICommon.GetLogFileName() + " AddEditRoute.aspx  , " + "Inside LicenseCounts()");
+
+            try
+            {
+                DataTable lstActive = ObjclsFrms.loadList("LicenseMasterCounts", "sp_LicenseManagement");
+                string RouteCount = lstActive.Rows[0]["RouteCount"].ToString();
+                string InventoryUserCount = lstActive.Rows[0]["InventoryUserCount"].ToString();
+                string BackOfficeUserCount = lstActive.Rows[0]["BackOfficeUserCount"].ToString();
+                string CustomerConnectUserCount = lstActive.Rows[0]["CustomerConnectUserCount"].ToString();
+                string SFA_AppUserCount = lstActive.Rows[0]["SFA_AppUserCount"].ToString();
+
+                LicenseInpara LicenseIn = new LicenseInpara();
+                LicenseIn = new LicenseInpara
+                {
+                    LicenseKey = LicenseKey.ToString(),
+                    RouteCount = RouteCount.ToString(),
+                    InventoryUserCount = InventoryUserCount.ToString(),
+                    BackOfficeUserCount = BackOfficeUserCount.ToString(),
+                    CustomerConnectUserCount = CustomerConnectUserCount.ToString(),
+                    SFA_AppUserCount = SFA_AppUserCount.ToString(),
+                    Platform = Platform.ToString(),
+                    IsStatusChange = IsStatusChange.ToString()
+                };
+
+                string JSONStr = JsonConvert.SerializeObject(LicenseIn);
+                string url = ConfigurationManager.AppSettings.Get("LicenseURL");
+                string Json = WebServiceCall(url, JSONStr);
+
+                ObjclsFrms.TraceService(UICommon.GetLogFileName() + "AddEditRoute.aspx  , " + "JSONStr : " + JSONStr);
+                ObjclsFrms.TraceService(UICommon.GetLogFileName() + "AddEditRoute.aspx  , " + "url : " + url);
+                ObjclsFrms.TraceService(UICommon.GetLogFileName() + "AddEditRoute.aspx  , " + "Json : " + Json);
+
+                if (Json != null)
+                {
+                    // Deserialize the escaped JSON string to a JObject
+                    var jsonObject = JsonConvert.DeserializeObject<JObject>(Json);
+
+                    // Serialize it back to a JSON string with proper formatting
+                    string formattedJson = JsonConvert.SerializeObject(jsonObject, Formatting.Indented);
+
+
+                    ResponseData responseData = JsonConvert.DeserializeObject<ResponseData>(formattedJson);
+                    JObject result = (JObject)responseData.result[0];
+
+                    // Extract values from the result object
+                    string resCode = result["Res"].ToString();
+                    string message = result["Message"].ToString();
+                    string ResponseMessage = result["ResponseMessage"].ToString();
+
+                    // Extract the LicenseData array
+                    JArray licenseDataArray = (JArray)result["LicenseData"];
+
+                    if (licenseDataArray.Count > 0)
+                    {
+                        // Access the first LicenseData object
+                        JObject licenseData = (JObject)licenseDataArray[0];
+
+                        string LicsKey = licenseData["LicenseNumber"].ToString();
+                        string StartDate = licenseData["StartDate"].ToString();
+                        string ExpDate = licenseData["ExpiryDate"].ToString();
+                        string ContPerson = licenseData["ContactPerson"]?.ToString();
+                        string ContNumber = licenseData["ContactNumber"]?.ToString();
+
+                        string UserLimit = licenseData["UserLimit"]?.ToString();
+                        string CusConnectLimit = licenseData["CusConnectLimit"]?.ToString();
+                        string InvLimit = licenseData["InvLimit"]?.ToString();
+                        string BOLimit = licenseData["BOLimit"]?.ToString();
+
+                        if (resCode == "200")
+                        {
+                            ViewState["ResponseMessage"] = ResponseMessage.ToString();
+                        }
+                        else
+                        {
+                            ObjclsFrms.TraceService(UICommon.GetLogFileName() + " AddEditRoute.aspx  , " + "Error: " + message);
+                            ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "tmp", "<script type='text/javascript'>failedModals();</script>", false);
+                        }
+                    }
+                    else
+                    {
+                        ObjclsFrms.TraceService(UICommon.GetLogFileName() + "AddEditRoute.aspx  , " + "Error: licenseDataArray count 0.");
+                        ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "tmp", "<script type='text/javascript'>failedModals();</script>", false);
+
+                    }
+                }
+                else
+                {
+                    ObjclsFrms.TraceService(UICommon.GetLogFileName() + "AddEditRoute.aspx  , " + "Error: Json Null.");
+                    ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "tmp", "<script type='text/javascript'>failedModals();</script>", false);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjclsFrms.TraceService(UICommon.GetLogFileName() + " AddEditRoute.aspx  , " + "Error: " + ex);
+                ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "tmp", "<script type='text/javascript'>failedModals();</script>", false);
+
+            }
+
+            ObjclsFrms.TraceService(UICommon.GetLogFileName() + " AddEditRoute.aspx  , " + "LicenseCounts() ends here.");
+        }
+
+        public class LicenseData
+        {
+            public string ID { get; set; }
+            public string LicenseNumber { get; set; }
+            public string LicenseKey { get; set; }
+            public string LicenseType { get; set; }
+            public string ProjectCode { get; set; }
+            public string ProjectName { get; set; }
+            public string CustomerCode { get; set; }
+            public string CustomerName { get; set; }
+            public string CreatedDate { get; set; }
+            public string StartDate { get; set; }
+            public string ExpiryDate { get; set; }
+            public string BufferPeriodInDays { get; set; }
+            public string NeedExpiryNotification { get; set; }
+            public string Prior_Exp_Notfctn_Intrvl_InDays { get; set; }
+            public string ModifiedDate { get; set; }
+            public string Status { get; set; }
+            public string ContactPerson { get; set; }
+            public string ContactNumber { get; set; }
+            public string Email { get; set; }
+            public string UserLimit { get; set; }
+            public string CusConnectLimit { get; set; }
+            public string InvLimit { get; set; }
+            public string BOLimit { get; set; }
+
+        }
+        public class Result
+        {
+            public string Res { get; set; }
+            public string Message { get; set; }
+            public string ResponseMessage { get; set; }
+            public List<LicenseData> LicenseData { get; set; }
+        }
+        public class ResponseData
+        {
+            public JArray result { get; set; }
+        }
+        public class LicenseInpara
+        {
+            public string LicenseKey { get; set; }
+            public string RouteCount { get; set; }
+            public string InventoryUserCount { get; set; }
+            public string BackOfficeUserCount { get; set; }
+            public string CustomerConnectUserCount { get; set; }
+            public string SFA_AppUserCount { get; set; }
+            public string Platform { get; set; }
+            public string IsStatusChange { get; set; }
+        }
+
 
         public void FillForm()
         {
@@ -76,6 +295,8 @@ namespace SalesForceAutomation.BO_Digits.en
                 enforcejp = lstDatas.Rows[0]["EnforceJP"].ToString();
                 odometer = lstDatas.Rows[0]["rot_EnableOdometer"].ToString();
                 status = lstDatas.Rows[0]["Status"].ToString();
+                ViewState["CurrentStatus"] = status;
+
                 rottype = lstDatas.Rows[0]["rot_Type"].ToString();
                 promode = lstDatas.Rows[0]["rot_ProductiveVisit"].ToString();
 
@@ -288,7 +509,7 @@ namespace SalesForceAutomation.BO_Digits.en
                 }
 
 
-                    for (int i = 0; i < ar.Length; i++)
+                for (int i = 0; i < ar.Length; i++)
                 {
                     foreach (RadComboBoxItem items in ddlpaymode.Items)
                     {
@@ -528,10 +749,27 @@ namespace SalesForceAutomation.BO_Digits.en
                 promode = "SL";
             }
 
+            try
+            {
+                string LicenseKey = ConfigurationManager.AppSettings.Get("LicenseKey");
+                string Platform = "USER";
+                string IsStatusChange = "N";
+                ObjclsFrms.TraceService(UICommon.GetLogFileName() + " ListRoute.aspx  , " + "LicenseKey : " + LicenseKey);
+                LicenseCounts(LicenseKey, Platform, IsStatusChange);
+            }
+            catch (Exception ex)
+            {
+                ObjclsFrms.TraceService(UICommon.GetLogFileName() + " LicenseManagement.aspx-1 , " + "Page_Load() Error: " + ex.Message.ToString());
+                ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "tmp", "<script type='text/javascript'>Failure();</script>", false);
+            }
+
             if (ResponseID.Equals("") || ResponseID == 0)
             {
+                string ResponseMessage = ViewState["ResponseMessage"].ToString();
 
-                string[] arr = { code, username, pass, unload, user, deviceid, stlmnt, enforcejp, odometer, status, 
+                if (ResponseMessage == "Proceed")
+                {
+                    string[] arr = { code, username, pass, unload, user, deviceid, stlmnt, enforcejp, odometer, status, 
                     rottype, promode,   arabic, rotcheck, loadinSign, loadTransferSign, LoadoutSign, LoadReq, LoadTransfer, LoadInEdit, 
                     LoadOutEdit, LoadOutExcessAllow, Depot,paymode,suglodreq,VantoVan,Lodrej,Rtntype,EnOpt, endorsement, 
                     InventoryOutMode, CusTransOutMode,AltRotCode ,EnableHelper,  Helper1, Helper2,Vehicle,TransName,VanStockAllow, NonVanStockAllow, 
@@ -558,35 +796,99 @@ namespace SalesForceAutomation.BO_Digits.en
                 {
                     ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "tmp", "<script type='text/javascript'>Failure();</script>", false);
                 }
+                }
+                else
+                {
+                    ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "tmp", "<script type='text/javascript'>FailureLicense('" + ResponseMessage + "');</script>", false);
+                }
             }
 
             else
             {
-                string id = ResponseID.ToString();
-                string[] arr = { code, username, pass, unload, deviceid, stlmnt, enforcejp, odometer, status, id, //11
+
+                try
+                {
+                    string CurrentStatus = ViewState["CurrentStatus"].ToString();
+                    string ChangedStatus = ddlStats.SelectedValue.ToString();
+
+                    if (CurrentStatus == "N" && ChangedStatus == "Y")
+                    {
+                        string LicenseKey = ConfigurationManager.AppSettings.Get("LicenseKey");
+                        string Platform = "USER";
+                        string IsStatusChange = "Y";
+                        ObjclsFrms.TraceService(UICommon.GetLogFileName() + " ListRoute.aspx  , " + "LicenseKey : " + LicenseKey);
+                        LicenseCounts(LicenseKey, Platform, IsStatusChange);
+
+                        string ResponseMessage = ViewState["ResponseMessage"].ToString();
+
+                        if (ResponseMessage == "Proceed")
+                        {
+                            string id = ResponseID.ToString();
+                            string[] arr = { code, username, pass, unload, deviceid, stlmnt, enforcejp, odometer, status, id, //11
                     rottype, promode ,  arabic, rotcheck, loadinSign, loadTransferSign, LoadoutSign, LoadReq, LoadTransfer, LoadInEdit, //21
                     LoadOutEdit, LoadOutExcessAllow, Depot,paymode,suglodreq,VantoVan,Lodrej,Rtntype,EnOpt, endorsement, //31
                     InventoryOutMode, CusTransOutMode,AltRotCode, EnableHelper, Helper1, Helper2,Vehicle,TransName,VanStockAllow, NonVanStockAllow, //41
                     RtnAplAttribute,OpnRtnImg,ResRtnImg,SchRtnImg, OptRtnApl,ResRtnApl,SysStock,GRImg,LTApprvl,JPSeq, //51
                     SchVisit,WeekendDys,GRImgMand,BRImgMand,pettycash,AssetTracking, ServiceReq,IsVehicleNo,EnbVehicle,AdvPay, //61
                     SettleFrom, InvTrans,pettyLimit,fence,CusTrans,MerchTrans,FSTrans,VanApproval,ARManAlloc, ERPInvReqLoc, ERPInvLoc, InvReconfAppr,varlimit,FutExpDel, user,logoutafter};
-                string Value = ObjclsFrms.SaveData("sp_Backend", "UpdateRoutes", name, arr);
-                int res = Int32.Parse(Value.ToString());
-                try
-                {
-                    if (res > 0)
-                    {
-                        ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "tmp", "<script type='text/javascript'>Succcess('Route Updated Successfully');</script>", false);
+                            string Value = ObjclsFrms.SaveData("sp_Backend", "UpdateRoutes", name, arr);
+                            int res = Int32.Parse(Value.ToString());
+                            try
+                            {
+                                if (res > 0)
+                                {
+                                    ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "tmp", "<script type='text/javascript'>Succcess('Route Updated Successfully');</script>", false);
+                                }
+                                else
+                                {
+                                    ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "tmp", "<script type='text/javascript'>Fail('The Device ID already Exisits');</script>", false);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "tmp", "<script type='text/javascript'>Failure();</script>", false);
+                            }
+                        }
+                        else
+                        {
+                            ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "tmp", "<script type='text/javascript'>FailureLicense('" + ResponseMessage + "');</script>", false);
+                        }
                     }
                     else
                     {
-                        ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "tmp", "<script type='text/javascript'>Fail('The Device ID already Exisits');</script>", false);
+                        string id = ResponseID.ToString();
+                        string[] arr = { code, username, pass, unload, deviceid, stlmnt, enforcejp, odometer, status, id, //11
+                    rottype, promode ,  arabic, rotcheck, loadinSign, loadTransferSign, LoadoutSign, LoadReq, LoadTransfer, LoadInEdit, //21
+                    LoadOutEdit, LoadOutExcessAllow, Depot,paymode,suglodreq,VantoVan,Lodrej,Rtntype,EnOpt, endorsement, //31
+                    InventoryOutMode, CusTransOutMode,AltRotCode, EnableHelper, Helper1, Helper2,Vehicle,TransName,VanStockAllow, NonVanStockAllow, //41
+                    RtnAplAttribute,OpnRtnImg,ResRtnImg,SchRtnImg, OptRtnApl,ResRtnApl,SysStock,GRImg,LTApprvl,JPSeq, //51
+                    SchVisit,WeekendDys,GRImgMand,BRImgMand,pettycash,AssetTracking, ServiceReq,IsVehicleNo,EnbVehicle,AdvPay, //61
+                    SettleFrom, InvTrans,pettyLimit,fence,CusTrans,MerchTrans,FSTrans,VanApproval,ARManAlloc, ERPInvReqLoc, ERPInvLoc, InvReconfAppr,varlimit,FutExpDel, user,logoutafter};
+                        string Value = ObjclsFrms.SaveData("sp_Backend", "UpdateRoutes", name, arr);
+                        int res = Int32.Parse(Value.ToString());
+                        try
+                        {
+                            if (res > 0)
+                            {
+                                ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "tmp", "<script type='text/javascript'>Succcess('Route Updated Successfully');</script>", false);
+                            }
+                            else
+                            {
+                                ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "tmp", "<script type='text/javascript'>Fail('The Device ID already Exisits');</script>", false);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "tmp", "<script type='text/javascript'>Failure();</script>", false);
+                        }
                     }
                 }
                 catch (Exception ex)
                 {
+                    ObjclsFrms.TraceService(UICommon.GetLogFileName() + " AddEditRoute.aspx  , " + "Error: " + ex.Message.ToString());
                     ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "tmp", "<script type='text/javascript'>Failure();</script>", false);
                 }
+
             }
         }
         public void user()

@@ -20,6 +20,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using Formatting = Newtonsoft.Json.Formatting;
 
+
 namespace SalesForceAutomation.BO_Digits.en
 {
     public partial class AddEditUser : System.Web.UI.Page
@@ -33,17 +34,7 @@ namespace SalesForceAutomation.BO_Digits.en
             {
                 if (!Page.IsPostBack)
                 {
-                    try
-                    {
-                        string LicenseKey = ConfigurationManager.AppSettings.Get("LicenseKey");
-                        ObjclsFrms.TraceService(UICommon.GetLogFileName() + " LicenseManagement.aspx-1 , " + "LicenseKey : " + LicenseKey);
-                        LicenseCounts(LicenseKey);
-                    }
-                    catch (Exception ex)
-                    {
-                        ObjclsFrms.TraceService(UICommon.GetLogFileName() + " LicenseManagement.aspx-1 , " + "Page_Load() Error: " + ex);
-                       
-                    }
+                  
 
                     if (string.IsNullOrEmpty(Request.Params["Id"]))
                     {
@@ -127,29 +118,43 @@ namespace SalesForceAutomation.BO_Digits.en
             catch (Exception ex)
             {
                 String innerMessage = (ex.InnerException != null) ? ex.InnerException.Message : "";
-                ObjclsFrms.TraceService(UICommon.GetLogFileName() + " InvoiceDetail.aspx PageLoad() , " + "Error : " + ex.Message.ToString() + " - " + innerMessage);
+                ObjclsFrms.TraceService(UICommon.GetLogFileName() + "  AddEditUser.aspx - WebServiceCall()  , " + "Error : " + ex.Message.ToString() + " - " + innerMessage);
                 return ex.Message.ToString();
             }
         }
-        public void LicenseCounts(string LicenseKey)
+        public void LicenseCounts(string LicenseKey, string Platform, string IsStatusChange)
         {
-            ObjclsFrms.TraceService(UICommon.GetLogFileName() + " LicenseManagement.aspx-1 , " + "Inside LicenseCounts()");
+            ObjclsFrms.TraceService(UICommon.GetLogFileName() + " AddEditUser.aspx.aspx  , " + "Inside LicenseCounts()");
 
             try
             {
+                DataTable lstActive = ObjclsFrms.loadList("LicenseMasterCounts", "sp_LicenseManagement");
+                string RouteCount = lstActive.Rows[0]["RouteCount"].ToString();
+                string InventoryUserCount = lstActive.Rows[0]["InventoryUserCount"].ToString();
+                string BackOfficeUserCount = lstActive.Rows[0]["BackOfficeUserCount"].ToString();
+                string CustomerConnectUserCount = lstActive.Rows[0]["CustomerConnectUserCount"].ToString();
+                string SFA_AppUserCount = lstActive.Rows[0]["SFA_AppUserCount"].ToString();
+
                 LicenseInpara LicenseIn = new LicenseInpara();
                 LicenseIn = new LicenseInpara
                 {
-                    LicenseKey = LicenseKey.ToString()
+                    LicenseKey = LicenseKey.ToString(),
+                    RouteCount = RouteCount.ToString(),
+                    InventoryUserCount = InventoryUserCount.ToString(),
+                    BackOfficeUserCount = BackOfficeUserCount.ToString(),
+                    CustomerConnectUserCount = CustomerConnectUserCount.ToString(),
+                    SFA_AppUserCount = SFA_AppUserCount.ToString(),
+                    Platform = Platform.ToString(),
+                    IsStatusChange = IsStatusChange.ToString()
                 };
 
                 string JSONStr = JsonConvert.SerializeObject(LicenseIn);
                 string url = ConfigurationManager.AppSettings.Get("LicenseURL");
                 string Json = WebServiceCall(url, JSONStr);
 
-                ObjclsFrms.TraceService(UICommon.GetLogFileName() + "LicenseManagement.aspx-1 , " + "JSONStr : " + JSONStr);
-                ObjclsFrms.TraceService(UICommon.GetLogFileName() + "LicenseManagement.aspx-1 , " + "url : " + url);
-                ObjclsFrms.TraceService(UICommon.GetLogFileName() + "LicenseManagement.aspx-1 , " + "Json : " + Json);
+                ObjclsFrms.TraceService(UICommon.GetLogFileName() + "AddEditUser.aspx.aspx  , " + "JSONStr : " + JSONStr);
+                ObjclsFrms.TraceService(UICommon.GetLogFileName() + "AddEditUser.aspx.aspx  , " + "url : " + url);
+                ObjclsFrms.TraceService(UICommon.GetLogFileName() + "AddEditUser.aspx.aspx  , " + "Json : " + Json);
 
                 if (Json != null)
                 {
@@ -166,6 +171,7 @@ namespace SalesForceAutomation.BO_Digits.en
                     // Extract values from the result object
                     string resCode = result["Res"].ToString();
                     string message = result["Message"].ToString();
+                    string ResponseMessage = result["ResponseMessage"].ToString();
 
                     // Extract the LicenseData array
                     JArray licenseDataArray = (JArray)result["LicenseData"];
@@ -188,45 +194,36 @@ namespace SalesForceAutomation.BO_Digits.en
 
                         if (resCode == "200")
                         {
-                            DataTable lstActive = ObjclsFrms.loadList("LicenseMasterCounts", "sp_Masters");
-                            string BOUserCount = lstActive.Rows[0]["BackOfficeUserCount"].ToString();
-
-                            int BOUserBal = Int32.Parse(BOLimit.ToString()) - Int32.Parse(BOUserCount.ToString());
-                            if (BOUserBal < 0)
-                            {
-                                BOUserBal = 0;
-                            }
-
-                            ViewState["BOUserCount"] = BOUserBal.ToString();
+                            ViewState["ResponseMessage"] = ResponseMessage.ToString();
                         }
                         else
                         {
-                            ObjclsFrms.TraceService(UICommon.GetLogFileName() + " LicenseManagement.aspx-1 , " + "Error: " + message);
+                            ObjclsFrms.TraceService(UICommon.GetLogFileName() + " AddEditUser.aspx.aspx  , " + "Error: " + message);
                             ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "tmp", "<script type='text/javascript'>failedModals();</script>", false);
                         }
                     }
                     else
                     {
-                        ObjclsFrms.TraceService(UICommon.GetLogFileName() + "LicenseManagement.aspx-1 , " + "Error: licenseDataArray count 0.");
+                        ObjclsFrms.TraceService(UICommon.GetLogFileName() + "AddEditUser.aspx.aspx  , " + "Error: licenseDataArray count 0.");
                         ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "tmp", "<script type='text/javascript'>failedModals();</script>", false);
 
                     }
                 }
                 else
                 {
-                    ObjclsFrms.TraceService(UICommon.GetLogFileName() + "LicenseManagement.aspx-1 , " + "Error: Json Null.");
+                    ObjclsFrms.TraceService(UICommon.GetLogFileName() + "AddEditUser.aspx.aspx  , " + "Error: Json Null.");
                     ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "tmp", "<script type='text/javascript'>failedModals();</script>", false);
 
                 }
             }
             catch (Exception ex)
             {
-                ObjclsFrms.TraceService(UICommon.GetLogFileName() + " LicenseManagement.aspx-1 , " + "Error: " + ex);
+                ObjclsFrms.TraceService(UICommon.GetLogFileName() + " AddEditUser.aspx.aspx  , " + "Error: " + ex);
                 ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "tmp", "<script type='text/javascript'>failedModals();</script>", false);
 
             }
 
-            ObjclsFrms.TraceService(UICommon.GetLogFileName() + " LicenseManagement.aspx-1 , " + "LicenseCounts() ends here.");
+            ObjclsFrms.TraceService(UICommon.GetLogFileName() + " AddEditUser.aspx.aspx  , " + "LicenseCounts() ends here.");
         }
 
         public class LicenseData
@@ -260,6 +257,7 @@ namespace SalesForceAutomation.BO_Digits.en
         {
             public string Res { get; set; }
             public string Message { get; set; }
+            public string ResponseMessage { get; set; }
             public List<LicenseData> LicenseData { get; set; }
         }
         public class ResponseData
@@ -269,6 +267,13 @@ namespace SalesForceAutomation.BO_Digits.en
         public class LicenseInpara
         {
             public string LicenseKey { get; set; }
+            public string RouteCount { get; set; }
+            public string InventoryUserCount { get; set; }
+            public string BackOfficeUserCount { get; set; }
+            public string CustomerConnectUserCount { get; set; }
+            public string SFA_AppUserCount { get; set; }
+            public string Platform { get; set; }
+            public string IsStatusChange { get; set; }
         }
 
 
@@ -291,6 +296,8 @@ namespace SalesForceAutomation.BO_Digits.en
             MembershipUser user = Membership.GetUser(this.txtUsername.Text);
 
             this.chkActive.Checked = user.IsApproved;
+            ViewState["Active"] = user.IsApproved;
+
             this.txtUsername.Enabled = false;
 
             string ID = userProfile.ID.ToString();
@@ -352,6 +359,17 @@ namespace SalesForceAutomation.BO_Digits.en
 
 
                 ddlAccess.SelectedValue = MapAccess;
+
+
+            }
+
+            DataTable dt = ObjclsFrms.loadList("SelectCCUser", "sp_Masters", ID.ToString());
+            if (dt.Rows.Count > 0)
+            {
+                string ccuser = dt.Rows[0]["IsCustomerConnectUser"].ToString();
+
+
+                ddlEnableCCUser.SelectedValue = ccuser;
 
 
             }
@@ -574,10 +592,25 @@ namespace SalesForceAutomation.BO_Digits.en
 
         protected void btnSave_Click(object sender, EventArgs e)
         {
+
             try
             {
-                string BOuserCount = ViewState["BOUserCount"].ToString();
-                int UserBOCount = Int32.Parse(BOuserCount);
+                string LicenseKey = ConfigurationManager.AppSettings.Get("LicenseKey");
+                string Platform = "BO";
+                string IsStatusChange = "N";
+                ObjclsFrms.TraceService(UICommon.GetLogFileName() + " AddEditUser.aspx , " + "LicenseKey : " + LicenseKey);
+                LicenseCounts(LicenseKey, Platform, IsStatusChange);
+            }
+            catch (Exception ex)
+            {
+                ObjclsFrms.TraceService(UICommon.GetLogFileName() + " AddEditUser.aspx , " + "btnSave_Click() Error: " + ex.Message.ToString());
+
+            }
+
+            try
+            {
+                //string BOuserCount = ViewState["BOUserCount"].ToString();
+                //int UserBOCount = Int32.Parse(BOuserCount);
 
                 UserProfile userProfile = new UserProfile();
                 MembershipUser user;
@@ -600,14 +633,16 @@ namespace SalesForceAutomation.BO_Digits.en
                         return;
                     }
 
-                    if(UserBOCount > 0)
+                    string ResponseMessage = ViewState["ResponseMessage"].ToString();
+
+                    if (ResponseMessage == "Proceed")
                     {
                         //string password = "user@123";
                         user = Membership.CreateUser(this.txtUsername.Text, password);
                     }
                     else
                     {
-                        ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "tmp", "<script type='text/javascript'>FailureLicense('User Limit Exceed, Kindly send a reguest to DigiTs to increase the User Limit.');</script>", false);
+                        ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "tmp", "<script type='text/javascript'>FailureLicense('" + ResponseMessage + "');</script>", false);
                         return;
                     }
 
@@ -617,84 +652,396 @@ namespace SalesForceAutomation.BO_Digits.en
                 }
 
                 user.IsApproved = this.chkActive.Checked;
-                Membership.UpdateUser(user);
-                userProfile.ModifiedDate = DateTime.Now;
-                userProfile.ModifiedBy = UICommon.GetCurrentUserID();
-                userProfile.UserId = new Guid(user.ProviderUserKey.ToString());
-                userProfile.FirstName = this.txtFirstName.Text;
-                userProfile.LastName = this.txtLastName.Text;
-                userProfile.Email = this.txtEmail.Text;
-                userProfile.ContacInfo = this.txtContactInfo.Text;
-                userProfile.CreatedDate = DateTime.Now;
-                userProfile.Active = this.chkActive.Checked;
-                userProfile.UserName = user.UserName;
-                int USTID = Int32.Parse(this.ddlUserType.SelectedValue.ToString());
-                userProfile.ust_ID = USTID;
-                // userProfile.UserType = ViewState["UserType"].ToString();
-                int Id = DALHelper.UpdateUserProfile(userProfile);
-                ViewState["userID"] = Id.ToString();
 
-                //ObjclsFrms.loadList("DeleteUserDivisionByUserID", "sp_Masters", Id.ToString());
-                //var SelectedDivision = ddlDivision.CheckedItems;
-                //string divi = "";
-                //string[] arr = { Id.ToString() };
-                //foreach (var item in SelectedDivision)
-                //{
-                //    divi = item.Value;
-                //    ObjclsFrms.SaveData("sp_Masters", "InsertUserDivision", divi.ToString(), arr);
-                //}
+                bool CurrentStatus = Convert.ToBoolean(ViewState["Active"]);
 
-                //string empCode;
-                //empCode = txtEmpCode.Text.ToString();
-                //string[] arrs = { empCode.ToString() };
-                //ObjclsFrms.SaveData("sp_Masters", "UpdateEmployeeCodeForUserProfile", Id.ToString(), arrs);
+                string CCUser = this.ddlEnableCCUser.SelectedValue.ToString();
 
-                //DataTable dtLogin = ObjclsFrms.loadList("SelLoginCredentailsForNAC", "sp_Masters");
-                //if (dtLogin.Rows.Count > 0)
-                //{
-                //    MailService(dtLogin, "BSMEA - Eclaim Account Activation for BSMEA Users", password);
-                //}
-                string userType = ddlUserType.SelectedItem.Text.ToString();
-                if (userType == "Depot Manager")
+                if (user.IsApproved == true && CurrentStatus == false)
                 {
-                  
-                    
-                    SaveDM();
 
-                    
-                }
-                if (userType == "Area Manager")
-                {
-                   
-                   
-                    SaveDAM();
-               
-                }
-                if (userType == "Sales Supervisor")
-                {
-                   
-                   
-                    SaveDSAM(); 
-                    
-                }
-                if  (userType == "Data Admin")
-                {
-                  
-                   
-                    SaveAdmin();
-                    
-                }
-               
-                if (userType == "Region Manager")
-                {
-                    
-                   
-                    SaveSM();
-                    
-                }
-                SaveRoles();
+                    string LicenseKey = ConfigurationManager.AppSettings.Get("LicenseKey");
+                    string Platform = "BO";
+                    string IsStatusChange = "Y";
+                    LicenseCounts(LicenseKey, Platform, IsStatusChange);
 
-                SaveMapaccess();
+                    if (CCUser == "Y")
+                    {
+                        Platform = "CC";
+                        LicenseCounts(LicenseKey, Platform, IsStatusChange);
+
+                        string ResponseMessage = ViewState["ResponseMessage"].ToString();
+
+                        if (ResponseMessage == "Proceed")
+                        {
+
+                            Membership.UpdateUser(user);
+                            userProfile.ModifiedDate = DateTime.Now;
+                            userProfile.ModifiedBy = UICommon.GetCurrentUserID();
+                            userProfile.UserId = new Guid(user.ProviderUserKey.ToString());
+                            userProfile.FirstName = this.txtFirstName.Text;
+                            userProfile.LastName = this.txtLastName.Text;
+                            userProfile.Email = this.txtEmail.Text;
+                            userProfile.ContacInfo = this.txtContactInfo.Text;
+                            userProfile.CreatedDate = DateTime.Now;
+                            userProfile.Active = this.chkActive.Checked;
+                            userProfile.UserName = user.UserName;
+                            int USTID = Int32.Parse(this.ddlUserType.SelectedValue.ToString());
+                            userProfile.ust_ID = USTID;
+                            // userProfile.UserType = ViewState["UserType"].ToString();
+                            int Id = DALHelper.UpdateUserProfile(userProfile);
+                            ViewState["userID"] = Id.ToString();
+
+                            //ObjclsFrms.loadList("DeleteUserDivisionByUserID", "sp_Masters", Id.ToString());
+                            //var SelectedDivision = ddlDivision.CheckedItems;
+                            //string divi = "";
+                            //string[] arr = { Id.ToString() };
+                            //foreach (var item in SelectedDivision)
+                            //{
+                            //    divi = item.Value;
+                            //    ObjclsFrms.SaveData("sp_Masters", "InsertUserDivision", divi.ToString(), arr);
+                            //}
+
+                            //string empCode;
+                            //empCode = txtEmpCode.Text.ToString();
+                            //string[] arrs = { empCode.ToString() };
+                            //ObjclsFrms.SaveData("sp_Masters", "UpdateEmployeeCodeForUserProfile", Id.ToString(), arrs);
+
+                            //DataTable dtLogin = ObjclsFrms.loadList("SelLoginCredentailsForNAC", "sp_Masters");
+                            //if (dtLogin.Rows.Count > 0)
+                            //{
+                            //    MailService(dtLogin, "BSMEA - Eclaim Account Activation for BSMEA Users", password);
+                            //}
+                            string userType = ddlUserType.SelectedItem.Text.ToString();
+                            if (userType == "Depot Manager")
+                            {
+
+
+                                SaveDM();
+
+
+                            }
+                            if (userType == "Area Manager")
+                            {
+
+
+                                SaveDAM();
+
+                            }
+                            if (userType == "Sales Supervisor")
+                            {
+
+
+                                SaveDSAM();
+
+                            }
+                            if (userType == "Data Admin")
+                            {
+
+
+                                SaveAdmin();
+
+                            }
+
+                            if (userType == "Region Manager")
+                            {
+
+
+                                SaveSM();
+
+                            }
+                            SaveRoles();
+
+                            SaveMapaccess();
+                            SaveCCUser();
+                        }
+                        else
+                        {
+                            ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "tmp", "<script type='text/javascript'>FailureLicense('" + ResponseMessage + "');</script>", false);
+                            return;
+                        }
+                    }
+                    else
+                    {
+
+                        string ResponseMessage = ViewState["ResponseMessage"].ToString();
+
+                        if (ResponseMessage == "Proceed")
+                        {
+                            Membership.UpdateUser(user);
+                            userProfile.ModifiedDate = DateTime.Now;
+                            userProfile.ModifiedBy = UICommon.GetCurrentUserID();
+                            userProfile.UserId = new Guid(user.ProviderUserKey.ToString());
+                            userProfile.FirstName = this.txtFirstName.Text;
+                            userProfile.LastName = this.txtLastName.Text;
+                            userProfile.Email = this.txtEmail.Text;
+                            userProfile.ContacInfo = this.txtContactInfo.Text;
+                            userProfile.CreatedDate = DateTime.Now;
+                            userProfile.Active = this.chkActive.Checked;
+                            userProfile.UserName = user.UserName;
+                            int USTID = Int32.Parse(this.ddlUserType.SelectedValue.ToString());
+                            userProfile.ust_ID = USTID;
+                            // userProfile.UserType = ViewState["UserType"].ToString();
+                            int Id = DALHelper.UpdateUserProfile(userProfile);
+                            ViewState["userID"] = Id.ToString();
+
+                            //ObjclsFrms.loadList("DeleteUserDivisionByUserID", "sp_Masters", Id.ToString());
+                            //var SelectedDivision = ddlDivision.CheckedItems;
+                            //string divi = "";
+                            //string[] arr = { Id.ToString() };
+                            //foreach (var item in SelectedDivision)
+                            //{
+                            //    divi = item.Value;
+                            //    ObjclsFrms.SaveData("sp_Masters", "InsertUserDivision", divi.ToString(), arr);
+                            //}
+
+                            //string empCode;
+                            //empCode = txtEmpCode.Text.ToString();
+                            //string[] arrs = { empCode.ToString() };
+                            //ObjclsFrms.SaveData("sp_Masters", "UpdateEmployeeCodeForUserProfile", Id.ToString(), arrs);
+
+                            //DataTable dtLogin = ObjclsFrms.loadList("SelLoginCredentailsForNAC", "sp_Masters");
+                            //if (dtLogin.Rows.Count > 0)
+                            //{
+                            //    MailService(dtLogin, "BSMEA - Eclaim Account Activation for BSMEA Users", password);
+                            //}
+                            string userType = ddlUserType.SelectedItem.Text.ToString();
+                            if (userType == "Depot Manager")
+                            {
+
+
+                                SaveDM();
+
+
+                            }
+                            if (userType == "Area Manager")
+                            {
+
+
+                                SaveDAM();
+
+                            }
+                            if (userType == "Sales Supervisor")
+                            {
+
+
+                                SaveDSAM();
+
+                            }
+                            if (userType == "Data Admin")
+                            {
+
+
+                                SaveAdmin();
+
+                            }
+
+                            if (userType == "Region Manager")
+                            {
+
+
+                                SaveSM();
+
+                            }
+                            SaveRoles();
+
+                            SaveMapaccess();
+
+                            SaveCCUser();
+                        }
+                        else
+                        {
+                            ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "tmp", "<script type='text/javascript'>FailureLicense('" + ResponseMessage + "');</script>", false);
+                            return;
+
+                        }
+                    }
+                }
+                else
+                {
+                    if (CCUser == "Y")
+                    {
+                        string LicenseKey = ConfigurationManager.AppSettings.Get("LicenseKey");
+                        string Platform = "CC";
+                        string IsStatusChange = "N";
+                        LicenseCounts(LicenseKey, Platform, IsStatusChange);
+
+                        string ResponseMessage = ViewState["ResponseMessage"].ToString();
+
+                        if (ResponseMessage == "Proceed")
+                        {
+                            Membership.UpdateUser(user);
+                            userProfile.ModifiedDate = DateTime.Now;
+                            userProfile.ModifiedBy = UICommon.GetCurrentUserID();
+                            userProfile.UserId = new Guid(user.ProviderUserKey.ToString());
+                            userProfile.FirstName = this.txtFirstName.Text;
+                            userProfile.LastName = this.txtLastName.Text;
+                            userProfile.Email = this.txtEmail.Text;
+                            userProfile.ContacInfo = this.txtContactInfo.Text;
+                            userProfile.CreatedDate = DateTime.Now;
+                            userProfile.Active = this.chkActive.Checked;
+                            userProfile.UserName = user.UserName;
+                            int USTID = Int32.Parse(this.ddlUserType.SelectedValue.ToString());
+                            userProfile.ust_ID = USTID;
+                            // userProfile.UserType = ViewState["UserType"].ToString();
+                            int Id = DALHelper.UpdateUserProfile(userProfile);
+                            ViewState["userID"] = Id.ToString();
+
+                            //ObjclsFrms.loadList("DeleteUserDivisionByUserID", "sp_Masters", Id.ToString());
+                            //var SelectedDivision = ddlDivision.CheckedItems;
+                            //string divi = "";
+                            //string[] arr = { Id.ToString() };
+                            //foreach (var item in SelectedDivision)
+                            //{
+                            //    divi = item.Value;
+                            //    ObjclsFrms.SaveData("sp_Masters", "InsertUserDivision", divi.ToString(), arr);
+                            //}
+
+                            //string empCode;
+                            //empCode = txtEmpCode.Text.ToString();
+                            //string[] arrs = { empCode.ToString() };
+                            //ObjclsFrms.SaveData("sp_Masters", "UpdateEmployeeCodeForUserProfile", Id.ToString(), arrs);
+
+                            //DataTable dtLogin = ObjclsFrms.loadList("SelLoginCredentailsForNAC", "sp_Masters");
+                            //if (dtLogin.Rows.Count > 0)
+                            //{
+                            //    MailService(dtLogin, "BSMEA - Eclaim Account Activation for BSMEA Users", password);
+                            //}
+                            string userType = ddlUserType.SelectedItem.Text.ToString();
+                            if (userType == "Depot Manager")
+                            {
+
+
+                                SaveDM();
+
+
+                            }
+                            if (userType == "Area Manager")
+                            {
+
+
+                                SaveDAM();
+
+                            }
+                            if (userType == "Sales Supervisor")
+                            {
+
+
+                                SaveDSAM();
+
+                            }
+                            if (userType == "Data Admin")
+                            {
+
+
+                                SaveAdmin();
+
+                            }
+
+                            if (userType == "Region Manager")
+                            {
+
+
+                                SaveSM();
+
+                            }
+                            SaveRoles();
+
+                            SaveMapaccess();
+
+                            SaveCCUser();
+                        }
+                        else
+                        {
+                            ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "tmp", "<script type='text/javascript'>FailureLicense('" + ResponseMessage + "');</script>", false);
+                            return;
+
+                        }
+                    }
+                    else
+                    {
+                        Membership.UpdateUser(user);
+                        userProfile.ModifiedDate = DateTime.Now;
+                        userProfile.ModifiedBy = UICommon.GetCurrentUserID();
+                        userProfile.UserId = new Guid(user.ProviderUserKey.ToString());
+                        userProfile.FirstName = this.txtFirstName.Text;
+                        userProfile.LastName = this.txtLastName.Text;
+                        userProfile.Email = this.txtEmail.Text;
+                        userProfile.ContacInfo = this.txtContactInfo.Text;
+                        userProfile.CreatedDate = DateTime.Now;
+                        userProfile.Active = this.chkActive.Checked;
+                        userProfile.UserName = user.UserName;
+                        int USTID = Int32.Parse(this.ddlUserType.SelectedValue.ToString());
+                        userProfile.ust_ID = USTID;
+                        // userProfile.UserType = ViewState["UserType"].ToString();
+                        int Id = DALHelper.UpdateUserProfile(userProfile);
+                        ViewState["userID"] = Id.ToString();
+
+                        //ObjclsFrms.loadList("DeleteUserDivisionByUserID", "sp_Masters", Id.ToString());
+                        //var SelectedDivision = ddlDivision.CheckedItems;
+                        //string divi = "";
+                        //string[] arr = { Id.ToString() };
+                        //foreach (var item in SelectedDivision)
+                        //{
+                        //    divi = item.Value;
+                        //    ObjclsFrms.SaveData("sp_Masters", "InsertUserDivision", divi.ToString(), arr);
+                        //}
+
+                        //string empCode;
+                        //empCode = txtEmpCode.Text.ToString();
+                        //string[] arrs = { empCode.ToString() };
+                        //ObjclsFrms.SaveData("sp_Masters", "UpdateEmployeeCodeForUserProfile", Id.ToString(), arrs);
+
+                        //DataTable dtLogin = ObjclsFrms.loadList("SelLoginCredentailsForNAC", "sp_Masters");
+                        //if (dtLogin.Rows.Count > 0)
+                        //{
+                        //    MailService(dtLogin, "BSMEA - Eclaim Account Activation for BSMEA Users", password);
+                        //}
+                        string userType = ddlUserType.SelectedItem.Text.ToString();
+                        if (userType == "Depot Manager")
+                        {
+
+
+                            SaveDM();
+
+
+                        }
+                        if (userType == "Area Manager")
+                        {
+
+
+                            SaveDAM();
+
+                        }
+                        if (userType == "Sales Supervisor")
+                        {
+
+
+                            SaveDSAM();
+
+                        }
+                        if (userType == "Data Admin")
+                        {
+
+
+                            SaveAdmin();
+
+                        }
+
+                        if (userType == "Region Manager")
+                        {
+
+
+                            SaveSM();
+
+                        }
+                        SaveRoles();
+
+                        SaveMapaccess();
+
+                        SaveCCUser();
+                    }
+                }          
 
             }
             catch (Exception ex)
@@ -1427,7 +1774,18 @@ namespace SalesForceAutomation.BO_Digits.en
             //int res = Int32.Parse(Value.ToString());
 
         }
-        
+
+        public void SaveCCUser()
+        {
+
+            string EnableCCuser = this.ddlEnableCCUser.SelectedValue.ToString();
+            string user = ViewState["userID"].ToString();
+            string[] ar = { EnableCCuser };
+            string Value = ObjclsFrms.SaveData("sp_Masters", "UpdateCCUser", user, ar);
+            //int res = Int32.Parse(Value.ToString());
+
+        }
+
 
     }
 }

@@ -438,6 +438,24 @@ namespace SalesForceAutomation.BO_Digits.en
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator14;
 
         /// <summary>
+        /// ddlEnableCCUser control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Telerik.Web.UI.RadComboBox ddlEnableCCUser;
+
+        /// <summary>
+        /// RequiredFieldValidator12 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator12;
+
+        /// <summary>
         /// chkActive control.
         /// </summary>
         /// <remarks>

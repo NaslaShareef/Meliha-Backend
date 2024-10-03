@@ -354,7 +354,21 @@
 
                                                 </div>
                                             </div>--%>
+                                    <div class="col-lg-4 form-group" style="padding-top: 10px;">
+                                        <label class="control-label col-lg-12">Customer Connect Enable<span class="required"></span></label>
+                                        <div class="col-lg-12">
+                                            <telerik:RadComboBox ID="ddlEnableCCUser" runat="server" Width="100%" Filter="Contains">
+                                                <Items>
 
+                                                    <telerik:RadComboBoxItem Text="Disable" Value="N" />
+                                                    <telerik:RadComboBoxItem Text="Enable" Value="Y" />
+                                                </Items>
+                                            </telerik:RadComboBox>
+                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator12" runat="server" Display="Dynamic" ValidationGroup="form"
+                                                ControlToValidate="ddlEnableCCUser" ErrorMessage="Please select Customer Connect Enable" ForeColor="Red"
+                                                SetFocusOnError="True"></asp:RequiredFieldValidator>
+                                        </div>
+                                    </div>
 
 
 

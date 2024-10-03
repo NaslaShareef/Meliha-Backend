@@ -124,6 +124,12 @@
                                                 HeaderStyle-Font-Bold="true" UniqueName="MapsDirectionAccess">
                                             </telerik:GridBoundColumn>
 
+                                            <telerik:GridBoundColumn DataField="IsCustomerConnectUser" AllowFiltering="true" HeaderStyle-Width="100px"
+                                                HeaderStyle-Font-Size="Smaller" HeaderText="Customer Connect User" FilterControlWidth="100%"
+                                                CurrentFilterFunction="Contains" AutoPostBackOnFilter="true" ShowFilterIcon="false"
+                                                HeaderStyle-Font-Bold="true" UniqueName="IsCustomerConnectUser">
+                                            </telerik:GridBoundColumn>
+
                                             <telerik:GridBoundColumn DataField="CreatedDate" AllowFiltering="true" HeaderStyle-Width="70px"
                                                 HeaderStyle-Font-Size="Smaller" HeaderText="Created" FilterControlWidth="100%"
                                                 CurrentFilterFunction="Contains" AutoPostBackOnFilter="true" ShowFilterIcon="false"

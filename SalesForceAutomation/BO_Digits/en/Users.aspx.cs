@@ -12,6 +12,9 @@ using System.Web.Security;
 using System.Security.Cryptography;
 using System.IO;
 using Ecosoft.DAL;
+using System.Net;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace SalesForceAutomation.BO_Digits.en
 {
@@ -25,6 +28,217 @@ namespace SalesForceAutomation.BO_Digits.en
 
             }
         }
+
+        public string WebServiceCall(string URL, string jsonData)
+        {
+
+            try
+            {
+
+                if (jsonData != null)
+                {
+                    // Create a request using a URL that can receive a post.
+                    WebRequest request = WebRequest.Create(URL);
+                    // Set the Method property of the request to POST.
+                    request.Method = "POST";
+                    request.ContentType = "application/json";
+
+                    byte[] postData = Encoding.UTF8.GetBytes(jsonData);
+
+                    // Set the ContentLength property of the request to the length of the data
+                    request.ContentLength = postData.Length;
+
+                    // Get the request stream and write the data to it
+                    using (Stream requestStream = request.GetRequestStream())
+                    {
+                        requestStream.Write(postData, 0, postData.Length);
+                    }
+
+                    WebResponse response = request.GetResponse();
+                    // Display the status.
+                    Console.WriteLine(((HttpWebResponse)response).StatusDescription);
+
+                    // Get the stream containing content returned by the server.
+                    // The using block ensures the stream is automatically closed.
+                    using (Stream dataStream = response.GetResponseStream())
+                    {
+                        // Open the stream using a StreamReader for easy access.
+                        StreamReader reader = new StreamReader(dataStream);
+                        // Read the content.
+                        string responseFromServer = reader.ReadToEnd();
+                        // Display the content.
+                        // dm.TraceService("[" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + "] @ " + " DataLake_Service WebServiceCall Success => " + responseFromServer);
+                        response.Close();
+                        return responseFromServer;
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                String innerMessage = (ex.InnerException != null) ? ex.InnerException.Message : "";
+                ObjclsFrms.TraceService(UICommon.GetLogFileName() + "  Users.aspx - WebServiceCall()  , " + "Error : " + ex.Message.ToString() + " - " + innerMessage);
+                return ex.Message.ToString();
+            }
+        }
+        public void LicenseCounts(string LicenseKey, string Platform, string IsStatusChange)
+        {
+            ObjclsFrms.TraceService(UICommon.GetLogFileName() + " Users.aspx.aspx  , " + "Inside LicenseCounts()");
+
+            try
+            {
+                DataTable lstActive = ObjclsFrms.loadList("LicenseMasterCounts", "sp_LicenseManagement");
+                string RouteCount = lstActive.Rows[0]["RouteCount"].ToString();
+                string InventoryUserCount = lstActive.Rows[0]["InventoryUserCount"].ToString();
+                string BackOfficeUserCount = lstActive.Rows[0]["BackOfficeUserCount"].ToString();
+                string CustomerConnectUserCount = lstActive.Rows[0]["CustomerConnectUserCount"].ToString();
+                string SFA_AppUserCount = lstActive.Rows[0]["SFA_AppUserCount"].ToString();
+
+                LicenseInpara LicenseIn = new LicenseInpara();
+                LicenseIn = new LicenseInpara
+                {
+                    LicenseKey = LicenseKey.ToString(),
+                    RouteCount = RouteCount.ToString(),
+                    InventoryUserCount = InventoryUserCount.ToString(),
+                    BackOfficeUserCount = BackOfficeUserCount.ToString(),
+                    CustomerConnectUserCount = CustomerConnectUserCount.ToString(),
+                    SFA_AppUserCount = SFA_AppUserCount.ToString(),
+                    Platform = Platform.ToString(),
+                    IsStatusChange = IsStatusChange.ToString()
+                };
+
+                string JSONStr = JsonConvert.SerializeObject(LicenseIn);
+                string url = ConfigurationManager.AppSettings.Get("LicenseURL");
+                string Json = WebServiceCall(url, JSONStr);
+
+                ObjclsFrms.TraceService(UICommon.GetLogFileName() + "Users.aspx.aspx  , " + "JSONStr : " + JSONStr);
+                ObjclsFrms.TraceService(UICommon.GetLogFileName() + "Users.aspx.aspx  , " + "url : " + url);
+                ObjclsFrms.TraceService(UICommon.GetLogFileName() + "Users.aspx.aspx  , " + "Json : " + Json);
+
+                if (Json != null)
+                {
+                    // Deserialize the escaped JSON string to a JObject
+                    var jsonObject = JsonConvert.DeserializeObject<JObject>(Json);
+
+                    // Serialize it back to a JSON string with proper formatting
+                    string formattedJson = JsonConvert.SerializeObject(jsonObject, Formatting.Indented);
+
+
+                    ResponseData responseData = JsonConvert.DeserializeObject<ResponseData>(formattedJson);
+                    JObject result = (JObject)responseData.result[0];
+
+                    // Extract values from the result object
+                    string resCode = result["Res"].ToString();
+                    string message = result["Message"].ToString();
+                    string ResponseMessage = result["ResponseMessage"].ToString();
+
+                    // Extract the LicenseData array
+                    JArray licenseDataArray = (JArray)result["LicenseData"];
+
+                    if (licenseDataArray.Count > 0)
+                    {
+                        // Access the first LicenseData object
+                        JObject licenseData = (JObject)licenseDataArray[0];
+
+                        string LicsKey = licenseData["LicenseNumber"].ToString();
+                        string StartDate = licenseData["StartDate"].ToString();
+                        string ExpDate = licenseData["ExpiryDate"].ToString();
+                        string ContPerson = licenseData["ContactPerson"]?.ToString();
+                        string ContNumber = licenseData["ContactNumber"]?.ToString();
+
+                        string UserLimit = licenseData["UserLimit"]?.ToString();
+                        string CusConnectLimit = licenseData["CusConnectLimit"]?.ToString();
+                        string InvLimit = licenseData["InvLimit"]?.ToString();
+                        string BOLimit = licenseData["BOLimit"]?.ToString();
+
+                        if (resCode == "200")
+                        {
+                            ViewState["ResponseMessage"] = ResponseMessage.ToString();
+                        }
+                        else
+                        {
+                            ObjclsFrms.TraceService(UICommon.GetLogFileName() + " Users.aspx.aspx  , " + "Error: " + message);
+                            ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "tmp", "<script type='text/javascript'>failedModals();</script>", false);
+                        }
+                    }
+                    else
+                    {
+                        ObjclsFrms.TraceService(UICommon.GetLogFileName() + "Users.aspx.aspx  , " + "Error: licenseDataArray count 0.");
+                        ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "tmp", "<script type='text/javascript'>failedModals();</script>", false);
+
+                    }
+                }
+                else
+                {
+                    ObjclsFrms.TraceService(UICommon.GetLogFileName() + "Users.aspx.aspx  , " + "Error: Json Null.");
+                    ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "tmp", "<script type='text/javascript'>failedModals();</script>", false);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjclsFrms.TraceService(UICommon.GetLogFileName() + " Users.aspx.aspx  , " + "Error: " + ex);
+                ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "tmp", "<script type='text/javascript'>failedModals();</script>", false);
+
+            }
+
+            ObjclsFrms.TraceService(UICommon.GetLogFileName() + " Users.aspx.aspx  , " + "LicenseCounts() ends here.");
+        }
+
+        public class LicenseData
+        {
+            public string ID { get; set; }
+            public string LicenseNumber { get; set; }
+            public string LicenseKey { get; set; }
+            public string LicenseType { get; set; }
+            public string ProjectCode { get; set; }
+            public string ProjectName { get; set; }
+            public string CustomerCode { get; set; }
+            public string CustomerName { get; set; }
+            public string CreatedDate { get; set; }
+            public string StartDate { get; set; }
+            public string ExpiryDate { get; set; }
+            public string BufferPeriodInDays { get; set; }
+            public string NeedExpiryNotification { get; set; }
+            public string Prior_Exp_Notfctn_Intrvl_InDays { get; set; }
+            public string ModifiedDate { get; set; }
+            public string Status { get; set; }
+            public string ContactPerson { get; set; }
+            public string ContactNumber { get; set; }
+            public string Email { get; set; }
+            public string UserLimit { get; set; }
+            public string CusConnectLimit { get; set; }
+            public string InvLimit { get; set; }
+            public string BOLimit { get; set; }
+
+        }
+        public class Result
+        {
+            public string Res { get; set; }
+            public string Message { get; set; }
+            public string ResponseMessage { get; set; }
+            public List<LicenseData> LicenseData { get; set; }
+        }
+        public class ResponseData
+        {
+            public JArray result { get; set; }
+        }
+        public class LicenseInpara
+        {
+            public string LicenseKey { get; set; }
+            public string RouteCount { get; set; }
+            public string InventoryUserCount { get; set; }
+            public string BackOfficeUserCount { get; set; }
+            public string CustomerConnectUserCount { get; set; }
+            public string SFA_AppUserCount { get; set; }
+            public string Platform { get; set; }
+            public string IsStatusChange { get; set; }
+        }
         public void ListData()
         {
             DataTable lstUser = default(DataTable);
@@ -34,7 +248,29 @@ namespace SalesForceAutomation.BO_Digits.en
 
         protected void lnkAddUser_Click(object sender, EventArgs e)
         {
-            Response.Redirect("AddEditUser.aspx");
+            try
+            {
+                string LicenseKey = ConfigurationManager.AppSettings.Get("LicenseKey");
+                string Platform = "BO";
+                string IsStatusChange = "N";
+                ObjclsFrms.TraceService(UICommon.GetLogFileName() + " Users.aspx , lnkAddUser_Click() - " + "LicenseKey : " + LicenseKey);
+                LicenseCounts(LicenseKey, Platform, IsStatusChange);
+            }
+            catch (Exception ex)
+            {
+                ObjclsFrms.TraceService(UICommon.GetLogFileName() + " Users.aspx , lnkAddUser_Click() - " + "Page_Load() Error: " + ex.Message.ToString());
+
+            }
+            string ResponseMessage = ViewState["ResponseMessage"].ToString();
+
+            if (ResponseMessage == "Proceed")
+            {
+                Response.Redirect("AddEditUser.aspx");
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "tmp", "<script type='text/javascript'>FailureLicense('" + ResponseMessage + "');</script>", false);
+            }
         }
 
         protected void grvRpt_NeedDataSource(object sender, Telerik.Web.UI.GridNeedDataSourceEventArgs e)
