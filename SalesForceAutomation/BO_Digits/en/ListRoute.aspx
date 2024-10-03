@@ -7,6 +7,11 @@
         function Failure() {
             $('#kt_modal_1_5').modal('show');
         }
+        function FailureLicense(c) {
+            $('#modalConfirm').modal('hide');
+            $('#kt_modal_1_7').modal('show');
+            $('#Failure').text(c);
+        }
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="Actions" runat="server">
@@ -461,7 +466,7 @@
                                             HeaderStyle-Font-Bold="true" UniqueName="rot_FencingRadius">
                                         </telerik:GridBoundColumn>
 
-                                           <telerik:GridBoundColumn DataField="rot_EnableFutureExpDel" AllowFiltering="true" HeaderStyle-Width="100px"
+                                        <telerik:GridBoundColumn DataField="rot_EnableFutureExpDel" AllowFiltering="true" HeaderStyle-Width="100px"
                                             HeaderStyle-Font-Size="Smaller" HeaderText="Enable Furture Exp.Delivery Orders" FilterControlWidth="100%"
                                             CurrentFilterFunction="Contains" AutoPostBackOnFilter="true" ShowFilterIcon="false"
                                             HeaderStyle-Font-Bold="true" UniqueName="rot_EnableFutureExpDel">
@@ -549,4 +554,23 @@
         </div>
     </div>
     <!--end::FailedModal-->
+    <!--begin::FailedModal License-->
+    <div class="modal fade" id="kt_modal_1_7" tabindex="-1" role="dialog" style="height: auto" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Oops..!</h5>
+                </div>
+                <div class="modal-body">
+                    <span id="Failure">Something went wrong, please try again later.</span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm fw-bold btn-secondary" onclick="cancelModal(kt_modal_1_7);">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end::FailedModal License-->
+
+
 </asp:Content>

@@ -16,10 +16,10 @@
             $('#modalConfirm').modal('hide');
             $('#kt_modal_1_5').modal('show');
         }
-        function FailureLicense(b) {
+        function FailureLicense(c) {
             $('#modalConfirm').modal('hide');
-            $('#kt_modal_1_6').modal('show');
-            $('#Failure').text(b);
+            $('#kt_modal_1_8').modal('show');
+            $('#Failure').text(c);
         }
     </script>
 </asp:Content>
@@ -49,153 +49,151 @@
                     <!--begin::Portlet-->
                     <div class="kt-portlet">
                         <telerik:RadAjaxPanel ID="RadAjaxPanel2" runat="server" LoadingPanelID="RadAjaxLoadingPanel3">
-                        <div class="kt-portlet__body">
-                            <label class="control-label"></label>
-                            <asp:Literal ID="ltrlMessage" runat="server"></asp:Literal>
-                            <div class="col-lg-12 row">
+                            <div class="kt-portlet__body">
+                                <label class="control-label"></label>
+                                <asp:Literal ID="ltrlMessage" runat="server"></asp:Literal>
+                                <div class="col-lg-12 row">
 
-                                <div class="col-lg-4 form-group">
+                                    <div class="col-lg-4 form-group">
 
-                                    <label class="control-label col-lg-12">Code <span class="required"></span></label>
-                                    <div class="col-lg-12">
-                                        <telerik:RadTextBox ID="txtCode" runat="server" CssClass="form-control" Width="100%" OnTextChanged="txtCode_TextChanged" AutoPostBack="true"></telerik:RadTextBox>
+                                        <label class="control-label col-lg-12">Code <span class="required"></span></label>
+                                        <div class="col-lg-12">
+                                            <telerik:RadTextBox ID="txtCode" runat="server" CssClass="form-control" Width="100%" OnTextChanged="txtCode_TextChanged" AutoPostBack="true"></telerik:RadTextBox>
 
-                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" Display="Dynamic" ValidationGroup="form"
-                                            ControlToValidate="txtCode" ErrorMessage="Please Enter Code" ForeColor="Red"
-                                            SetFocusOnError="True"></asp:RequiredFieldValidator><br />
+                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" Display="Dynamic" ValidationGroup="form"
+                                                ControlToValidate="txtCode" ErrorMessage="Please Enter Code" ForeColor="Red"
+                                                SetFocusOnError="True"></asp:RequiredFieldValidator><br />
                                             <asp:Label ID="lblCodeDupli" runat="server" Visible="false" ForeColor="Red"></asp:Label>
 
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="col-lg-4 form-group">
-                                    <label class="control-label col-lg-6">User Name <span class="required"></span></label>
-                                    <div class="col-lg-12">
-                                        <telerik:RadTextBox ID="txtName" runat="server" CssClass="form-control" Width="100%"></telerik:RadTextBox>
+                                    <div class="col-lg-4 form-group">
+                                        <label class="control-label col-lg-6">User Name <span class="required"></span></label>
+                                        <div class="col-lg-12">
+                                            <telerik:RadTextBox ID="txtName" runat="server" CssClass="form-control" Width="100%"></telerik:RadTextBox>
 
-                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" Display="Dynamic" ValidationGroup="form"
-                                            ControlToValidate="txtName" ErrorMessage="Please Enter Name" ForeColor="Red"
-                                            SetFocusOnError="True"></asp:RequiredFieldValidator>
+                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" Display="Dynamic" ValidationGroup="form"
+                                                ControlToValidate="txtName" ErrorMessage="Please Enter Name" ForeColor="Red"
+                                                SetFocusOnError="True"></asp:RequiredFieldValidator>
 
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="col-lg-4 form-group">
-                                    <label class="control-label col-lg-6">Arabic Name <span class="required"></span></label>
-                                    <div class="col-lg-12">
-                                        <telerik:RadTextBox ID="txtArabic" runat="server" CssClass="form-control" Width="100%"></telerik:RadTextBox>
+                                    <div class="col-lg-4 form-group">
+                                        <label class="control-label col-lg-6">Arabic Name <span class="required"></span></label>
+                                        <div class="col-lg-12">
+                                            <telerik:RadTextBox ID="txtArabic" runat="server" CssClass="form-control" Width="100%"></telerik:RadTextBox>
 
-                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" Display="Dynamic" ValidationGroup="form"
-                                            ControlToValidate="txtArabic" ErrorMessage="Please Enter Arabic Name" ForeColor="Red"
-                                            SetFocusOnError="True"></asp:RequiredFieldValidator>
+                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" Display="Dynamic" ValidationGroup="form"
+                                                ControlToValidate="txtArabic" ErrorMessage="Please Enter Arabic Name" ForeColor="Red"
+                                                SetFocusOnError="True"></asp:RequiredFieldValidator>
 
+                                        </div>
                                     </div>
-                                </div>
 
+                                </div>
+                                <div class="col-lg-12 row" style="padding-top: 10px;">
+
+                                    <div class="col-lg-4 form-group">
+
+                                        <label class="control-label col-lg-12">Password <span class="required"></span></label>
+                                        <div class="col-lg-12">
+                                            <telerik:RadTextBox ID="txtPass" runat="server" CssClass="form-control" Width="100%"></telerik:RadTextBox>
+
+                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" Display="Dynamic" ValidationGroup="form"
+                                                ControlToValidate="txtPass" ErrorMessage="Please Enter Password" ForeColor="Red"
+                                                SetFocusOnError="True"></asp:RequiredFieldValidator>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 form-group">
+
+                                        <label class="control-label col-lg-12">Status</label>
+                                        <div class="col-lg-12">
+                                            <telerik:RadComboBox runat="server" ID="ddlStatus" Width="100%" EnableVirtualScrolling="true" EmptyMessage="Select Status">
+                                                <Items>
+                                                    <telerik:RadComboBoxItem Text="Active" Value="Y" />
+                                                    <telerik:RadComboBoxItem Text="Inactive" Value="N" />
+                                                </Items>
+                                            </telerik:RadComboBox>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 form-group">
+                                        <label class="control-label col-lg-12">App User Type <span class="required"></span></label>
+                                        <div class="col-lg-12">
+                                            <telerik:RadDropDownList ID="rdappUsrtype" runat="server" Width="100%" DefaultMessage="Select Type" OnSelectedIndexChanged="rdappUsrtype_SelectedIndexChanged" AutoPostBack="true" RenderMode="Lightweight">
+                                                <Items>
+                                                    <telerik:DropDownListItem Text="SFA" Value="SFA" />
+                                                    <telerik:DropDownListItem Text="Inventory" Value="INV" />
+                                                </Items>
+                                            </telerik:RadDropDownList>
+                                        </div>
+                                    </div>
+
+
+
+
+                                </div>
+                                <asp:PlaceHolder runat="server" ID="Tracking" Visible="false">
+                                    <div class="col-lg-12 row" style="padding-top: 10px;">
+
+                                        <div class="col-lg-4 form-group">
+                                            <label class="control-label col-lg-12">Tracking Needed <span class="required"></span></label>
+                                            <div class="col-lg-12">
+                                                <telerik:RadDropDownList ID="ddlTracking" runat="server" Width="100%" DefaultMessage="Please Select">
+                                                    <Items>
+                                                        <telerik:DropDownListItem Text="Yes" Value="Y" />
+                                                        <telerik:DropDownListItem Text="No" Value="N" />
+                                                    </Items>
+                                                </telerik:RadDropDownList>
+                                            </div>
+
+
+                                        </div>
+
+                                        <div class="col-lg-4 form-group">
+                                            <label class="control-label col-lg-12">Tracking Duration(In Seconds)<span class="required"></span></label>
+                                            <div class="col-lg-12">
+                                                <telerik:RadNumericTextBox ID="rdDuration" NumberFormat-DecimalDigits="0" runat="server" CssClass="form-control" Width="100%"></telerik:RadNumericTextBox>
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" ValidationGroup="form"
+                                                    ControlToValidate="rdDuration" ErrorMessage="<br/>Please Enter Tracking Duration" ForeColor="Red" Display="Dynamic"
+                                                    SetFocusOnError="True"></asp:RequiredFieldValidator><br />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </asp:PlaceHolder>
+                                <asp:PlaceHolder runat="server" ID="Stoke" Visible="false">
+                                    <div class="col-lg-12 row" style="padding-top: 10px;">
+
+                                        <div class="col-lg-4 form-group">
+                                            <label class="control-label col-lg-12">Is Instant Stock Count <span class="required"></span></label>
+                                            <div class="col-lg-12">
+                                                <telerik:RadDropDownList ID="rdInsStockCount" runat="server" Width="100%" DefaultMessage="Please Select">
+                                                    <Items>
+                                                        <telerik:DropDownListItem Text="Yes" Value="Y" />
+                                                        <telerik:DropDownListItem Text="No" Value="N" />
+                                                    </Items>
+                                                </telerik:RadDropDownList>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 form-group">
+                                            <label class="control-label col-lg-12">User Stores<span class="required"></span></label>
+                                            <div class="col-lg-12">
+                                                <telerik:RadComboBox ID="rdStore" runat="server" EmptyMessage="Select Stores" Filter="Contains" Width="100%" RenderMode="Lightweight" CheckBoxes="true" EnableCheckAllItemsCheckBox="true" AutoPostBack="true"></telerik:RadComboBox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </asp:PlaceHolder>
                             </div>
+
                             <div class="col-lg-12 row" style="padding-top: 10px;">
-
-                                <div class="col-lg-4 form-group">
-
-                                    <label class="control-label col-lg-12">Password <span class="required"></span></label>
-                                    <div class="col-lg-12">
-                                        <telerik:RadTextBox ID="txtPass" runat="server" CssClass="form-control" Width="100%"></telerik:RadTextBox>
-
-                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" Display="Dynamic" ValidationGroup="form"
-                                            ControlToValidate="txtPass" ErrorMessage="Please Enter Password" ForeColor="Red"
-                                            SetFocusOnError="True"></asp:RequiredFieldValidator>
-
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 form-group">
-
-                                    <label class="control-label col-lg-12">Status</label>
-                                    <div class="col-lg-12">
-                                        <telerik:RadComboBox runat="server" ID="ddlStatus" Width="100%" EnableVirtualScrolling="true" EmptyMessage="Select Status">
-                                            <Items>
-                                                <telerik:RadComboBoxItem Text="Active" Value="Y" />
-                                                <telerik:RadComboBoxItem Text="Inactive" Value="N" />
-                                            </Items>
-                                        </telerik:RadComboBox>
-                                    </div>
-                                </div>
-
-                                   <div class="col-lg-4 form-group">
-                                    <label class="control-label col-lg-12">App User Type <span class="required"></span></label>
-                                    <div class="col-lg-12">
-                                        <telerik:RadDropDownList ID="rdappUsrtype" runat="server" Width="100%" DefaultMessage="Select Type" OnSelectedIndexChanged="rdappUsrtype_SelectedIndexChanged" AutoPostBack="true"  RenderMode="Lightweight">
-                                            <Items>
-                                                <telerik:DropDownListItem Text="SFA" Value="SFA" />
-                                                <telerik:DropDownListItem Text="Inventory" Value="INV"  />
-                                            </Items>
-                                        </telerik:RadDropDownList>
-                                    </div>
-                                </div>
-
-
-                             
-
-                            </div>
-                               <asp:PlaceHolder runat="server" ID="Tracking" Visible="false">
-                              <div class="col-lg-12 row" style="padding-top: 10px;">
-
-                                   <div class="col-lg-4 form-group">
-                                    <label class="control-label col-lg-12">Tracking Needed <span class="required"></span></label>
-                                    <div class="col-lg-12">
-                                        <telerik:RadDropDownList ID="ddlTracking" runat="server" Width="100%" DefaultMessage="Please Select">
-                                            <Items>
-                                                <telerik:DropDownListItem Text="Yes" Value="Y" />
-                                                <telerik:DropDownListItem Text="No" Value="N" />
-                                            </Items>
-                                        </telerik:RadDropDownList>
-                                    </div>
-
-
-                                </div>
-
-                                <div class="col-lg-4 form-group">
-                                    <label class="control-label col-lg-12">Tracking Duration(In Seconds)<span class="required"></span></label>
-                                    <div class="col-lg-12">
-                                        <telerik:RadNumericTextBox ID="rdDuration" NumberFormat-DecimalDigits="0" runat="server" CssClass="form-control" Width="100%"></telerik:RadNumericTextBox>
-                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" ValidationGroup="form"
-                                            ControlToValidate="rdDuration" ErrorMessage="<br/>Please Enter Tracking Duration" ForeColor="Red" Display="Dynamic"
-                                            SetFocusOnError="True"></asp:RequiredFieldValidator><br />
-                                    </div>
-                                </div>
-                                  </div>
-                                   </asp:PlaceHolder>
-                                    <asp:PlaceHolder runat="server" ID="Stoke" Visible="false">
-                                 <div class="col-lg-12 row" style="padding-top: 10px;">
-
-                                <div class="col-lg-4 form-group">
-                                    <label class="control-label col-lg-12">Is Instant Stock Count <span class="required"></span></label>
-                                    <div class="col-lg-12">
-                                        <telerik:RadDropDownList ID="rdInsStockCount" runat="server" Width="100%" DefaultMessage="Please Select">
-                                            <Items>
-                                                <telerik:DropDownListItem Text="Yes" Value="Y"  />
-                                                <telerik:DropDownListItem Text="No" Value="N" />
-                                            </Items>
-                                        </telerik:RadDropDownList>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 form-group">
-                                    <label class="control-label col-lg-12">User Stores<span class="required"></span></label>
-                                    <div class="col-lg-12">
-                                         <telerik:RadComboBox ID="rdStore" runat="server" EmptyMessage="Select Stores" Filter="Contains" Width="100%" RenderMode="Lightweight" CheckBoxes="true" EnableCheckAllItemsCheckBox="true" AutoPostBack="true"></telerik:RadComboBox>
-                                    </div>
-                                </div>
-                                     </div>
-                                        </asp:PlaceHolder>
                             </div>
 
-                  <div class="col-lg-12 row" style="padding-top: 10px;">
-
-                      
-                      </div>
 
 
 
-                        
                         </telerik:RadAjaxPanel>
                         <telerik:RadAjaxLoadingPanel runat="server" Skin="Sunset" ID="RadAjaxLoadingPanel3" EnableEmbeddedSkins="false"
                             BackColor="Transparent"
@@ -210,7 +208,7 @@
         </div>
     </div>
     <div class="clearfix"></div>
-    <div class="modal fade modal-center" id="modalConfirm" tabindex="-1" role="dialog" style="height:auto"  data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalLabels" aria-hidden="true">
+    <div class="modal fade modal-center" id="modalConfirm" tabindex="-1" role="dialog" style="height: auto" data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalLabels" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -234,7 +232,7 @@
         </div>
     </div>
     <!--begin::SuccessModal-->
-    <div class="modal fade" id="kt_modal_1_4" tabindex="-1" role="dialog" style="height:auto"  aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="kt_modal_1_4" tabindex="-1" role="dialog" style="height: auto" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -252,7 +250,7 @@
     <!--end::SuccessModal-->
 
     <!--begin::FailedModal-->
-    <div class="modal fade" id="kt_modal_1_5" tabindex="-1" role="dialog" style="height:auto"  aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="kt_modal_1_5" tabindex="-1" role="dialog" style="height: auto" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -268,21 +266,22 @@
         </div>
     </div>
     <!--end::FailedModal-->
-     <!--begin::FailedModal License-->
- <div class="modal fade" id="kt_modal_1_6" tabindex="-1" role="dialog" style="height:auto"  aria-labelledby="exampleModalLabel" aria-hidden="true">
-     <div class="modal-dialog" role="document">
-         <div class="modal-content">
-             <div class="modal-header">
-                 <h5 class="modal-title">Oops..!</h5>
-             </div>
-             <div class="modal-body">
-                 <span id="Failure">Something went wrong, please try again later.</span>
-             </div>
-             <div class="modal-footer">
-                 <button type="button" class="btn btn-sm fw-bold btn-secondary" onclick="cancelModal(kt_modal_1_6);">Ok</button>
-             </div>
-         </div>
-     </div>
- </div>
- <!--end::FailedModal License-->
+
+    <!--begin::FailedModal License-->
+    <div class="modal fade" id="kt_modal_1_8" tabindex="-1" role="dialog" style="height: auto" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Oops..!</h5>
+                </div>
+                <div class="modal-body">
+                    <span id="Failure">Something went wrong, please try again later.</span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm fw-bold btn-secondary" onclick="cancelModal(kt_modal_1_8);">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end::FailedModal License-->
 </asp:Content>

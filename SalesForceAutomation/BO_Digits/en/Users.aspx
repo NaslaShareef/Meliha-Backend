@@ -19,7 +19,11 @@
             $('#modalConfirm').modal('hide');
             $('#kt_modal_1_5').modal('show');
         }
-
+        function FailureLicense(c) {
+            $('#modalConfirm').modal('hide');
+            $('#kt_modal_1_8').modal('show');
+            $('#Failure').text(c);
+        }
     </script>
 </asp:Content>
 <asp:Content ID="ContentAction" ContentPlaceHolderID="Actions" runat="server">
@@ -43,125 +47,125 @@
                     <!--begin::Portlet-->
                     <div class="kt-portlet">
                         <telerik:RadAjaxPanel ID="RadAjaxPanel3" runat="server" LoadingPanelID="RadAjaxLoadingPanel2">
-                        <!--begin::Form-->
-                        <div class="kt-form kt-form--label-right">
-                            <div class="kt-portlet__body">
-                                <asp:Literal ID="ltrlMessage" runat="server"></asp:Literal>
+                            <!--begin::Form-->
+                            <div class="kt-form kt-form--label-right">
+                                <div class="kt-portlet__body">
+                                    <asp:Literal ID="ltrlMessage" runat="server"></asp:Literal>
 
-                                <telerik:RadSkinManager ID="RadSkinManager1" runat="server" Skin="Material" />
-                                <telerik:RadGrid RenderMode="Lightweight" runat="server" EnableLinqExpressions="false" AllowMultiRowSelection="true"
-                                    ID="grvRpt" GridLines="None"
-                                    ShowFooter="True" AllowSorting="True"
-                                    OnNeedDataSource="grvRpt_NeedDataSource"
-                                    OnItemCommand="grvRpt_ItemCommand"
-                                    AllowFilteringByColumn="true"
-                                    ClientSettings-Resizing-ClipCellContentOnResize="true"
-                                    EnableAjaxSkinRendering="true"
-                                    AllowPaging="true" PageSize="10" CellSpacing="0">
-                                    <ClientSettings>
-                                        <Scrolling AllowScroll="True" UseStaticHeaders="True" SaveScrollPosition="true" ScrollHeight="500px"></Scrolling>
-                                    </ClientSettings>
-                                    <MasterTableView AutoGenerateColumns="False" FilterItemStyle-Font-Size="XX-Small" CanRetrieveAllData="false"
-                                        ShowFooter="false" DataKeyNames="UserId"
-                                        EnableHeaderContextMenu="true">
-                                        <Columns>
+                                    <telerik:RadSkinManager ID="RadSkinManager1" runat="server" Skin="Material" />
+                                    <telerik:RadGrid RenderMode="Lightweight" runat="server" EnableLinqExpressions="false" AllowMultiRowSelection="true"
+                                        ID="grvRpt" GridLines="None"
+                                        ShowFooter="True" AllowSorting="True"
+                                        OnNeedDataSource="grvRpt_NeedDataSource"
+                                        OnItemCommand="grvRpt_ItemCommand"
+                                        AllowFilteringByColumn="true"
+                                        ClientSettings-Resizing-ClipCellContentOnResize="true"
+                                        EnableAjaxSkinRendering="true"
+                                        AllowPaging="true" PageSize="10" CellSpacing="0">
+                                        <ClientSettings>
+                                            <Scrolling AllowScroll="True" UseStaticHeaders="True" SaveScrollPosition="true" ScrollHeight="500px"></Scrolling>
+                                        </ClientSettings>
+                                        <MasterTableView AutoGenerateColumns="False" FilterItemStyle-Font-Size="XX-Small" CanRetrieveAllData="false"
+                                            ShowFooter="false" DataKeyNames="UserId"
+                                            EnableHeaderContextMenu="true">
+                                            <Columns>
 
-                                             <telerik:GridButtonColumn CommandName="Edit" Text='<i class="fa fa-edit"></i>' HeaderStyle-Width="60px" EditFormColumnIndex="0" UniqueName="EditColumn">
-                                            </telerik:GridButtonColumn>
+                                                <telerik:GridButtonColumn CommandName="Edit" Text='<i class="fa fa-edit"></i>' HeaderStyle-Width="60px" EditFormColumnIndex="0" UniqueName="EditColumn">
+                                                </telerik:GridButtonColumn>
 
-                                            <telerik:GridTemplateColumn HeaderStyle-Width="60px" AllowFiltering="false" HeaderText="Roles" HeaderStyle-Font-Size="Smaller" HeaderStyle-Font-Bold="true">
-                                                <ItemTemplate>
-                                                    <asp:ImageButton CommandName="Roles" ID="RadImageButton1" Visible="true" AlternateText="Roles" runat="server"
-                                                        ImageUrl="../assets/media/icons/duotune/General/gen003.svg"></asp:ImageButton>
-                                                </ItemTemplate>
-                                            </telerik:GridTemplateColumn>
-                                             <telerik:GridTemplateColumn HeaderStyle-Width="60px" AllowFiltering="false" HeaderText="Workflow" HeaderStyle-Font-Size="Smaller" HeaderStyle-Font-Bold="true">
-                                                <ItemTemplate>
-                                                    <asp:ImageButton CommandName="Workflow" ID="RadImageButton2" Visible="true" AlternateText="Workflow" runat="server"
-                                                        ImageUrl="../assets/media/icons/duotune/General/Workflow.svg"></asp:ImageButton>
-                                                </ItemTemplate>
-                                            </telerik:GridTemplateColumn>
+                                                <telerik:GridTemplateColumn HeaderStyle-Width="60px" AllowFiltering="false" HeaderText="Roles" HeaderStyle-Font-Size="Smaller" HeaderStyle-Font-Bold="true">
+                                                    <ItemTemplate>
+                                                        <asp:ImageButton CommandName="Roles" ID="RadImageButton1" Visible="true" AlternateText="Roles" runat="server"
+                                                            ImageUrl="../assets/media/icons/duotune/General/gen003.svg"></asp:ImageButton>
+                                                    </ItemTemplate>
+                                                </telerik:GridTemplateColumn>
+                                                <telerik:GridTemplateColumn HeaderStyle-Width="60px" AllowFiltering="false" HeaderText="Workflow" HeaderStyle-Font-Size="Smaller" HeaderStyle-Font-Bold="true">
+                                                    <ItemTemplate>
+                                                        <asp:ImageButton CommandName="Workflow" ID="RadImageButton2" Visible="true" AlternateText="Workflow" runat="server"
+                                                            ImageUrl="../assets/media/icons/duotune/General/Workflow.svg"></asp:ImageButton>
+                                                    </ItemTemplate>
+                                                </telerik:GridTemplateColumn>
 
-                                            <telerik:GridTemplateColumn HeaderStyle-Width="80px" AllowFiltering="false" HeaderText="CC Settings" HeaderStyle-Font-Size="Smaller" HeaderStyle-Font-Bold="true">
-                                                <ItemTemplate>
-                                                    <asp:ImageButton CommandName="CCSettings" ID="CCSettings" Visible="true" AlternateText="CCSettings" runat="server"
-                                                        ImageUrl="../assets/media/icons/settingssmall.png" Width="22px" Height="22px"></asp:ImageButton>
-                                                </ItemTemplate>
-                                            </telerik:GridTemplateColumn>
+                                                <telerik:GridTemplateColumn HeaderStyle-Width="80px" AllowFiltering="false" HeaderText="CC Settings" HeaderStyle-Font-Size="Smaller" HeaderStyle-Font-Bold="true">
+                                                    <ItemTemplate>
+                                                        <asp:ImageButton CommandName="CCSettings" ID="CCSettings" Visible="true" AlternateText="CCSettings" runat="server"
+                                                            ImageUrl="../assets/media/icons/settingssmall.png" Width="22px" Height="22px"></asp:ImageButton>
+                                                    </ItemTemplate>
+                                                </telerik:GridTemplateColumn>
 
-                                            <telerik:GridBoundColumn DataField="FirstName" AllowFiltering="true" HeaderStyle-Width="100px"
-                                                HeaderStyle-Font-Size="Smaller" HeaderText="First Name" FilterControlWidth="100%"
-                                                CurrentFilterFunction="Contains" AutoPostBackOnFilter="true" ShowFilterIcon="false"
-                                                HeaderStyle-Font-Bold="true" UniqueName="FirstName">
-                                            </telerik:GridBoundColumn>
+                                                <telerik:GridBoundColumn DataField="FirstName" AllowFiltering="true" HeaderStyle-Width="100px"
+                                                    HeaderStyle-Font-Size="Smaller" HeaderText="First Name" FilterControlWidth="100%"
+                                                    CurrentFilterFunction="Contains" AutoPostBackOnFilter="true" ShowFilterIcon="false"
+                                                    HeaderStyle-Font-Bold="true" UniqueName="FirstName">
+                                                </telerik:GridBoundColumn>
 
-                                            <telerik:GridBoundColumn DataField="LastName" AllowFiltering="true" HeaderStyle-Width="100px"
-                                                HeaderStyle-Font-Size="Smaller" HeaderText="Last Name" FilterControlWidth="100%"
-                                                CurrentFilterFunction="Contains" AutoPostBackOnFilter="true" ShowFilterIcon="false"
-                                                HeaderStyle-Font-Bold="true" UniqueName="LastName">
-                                            </telerik:GridBoundColumn>
+                                                <telerik:GridBoundColumn DataField="LastName" AllowFiltering="true" HeaderStyle-Width="100px"
+                                                    HeaderStyle-Font-Size="Smaller" HeaderText="Last Name" FilterControlWidth="100%"
+                                                    CurrentFilterFunction="Contains" AutoPostBackOnFilter="true" ShowFilterIcon="false"
+                                                    HeaderStyle-Font-Bold="true" UniqueName="LastName">
+                                                </telerik:GridBoundColumn>
 
-                                            <telerik:GridBoundColumn DataField="UserName" AllowFiltering="true" HeaderStyle-Width="150px"
-                                                HeaderStyle-Font-Size="Smaller" HeaderText="User Name" FilterControlWidth="100%"
-                                                CurrentFilterFunction="Contains" AutoPostBackOnFilter="true" ShowFilterIcon="false"
-                                                HeaderStyle-Font-Bold="true" UniqueName="UserName">
-                                            </telerik:GridBoundColumn>
+                                                <telerik:GridBoundColumn DataField="UserName" AllowFiltering="true" HeaderStyle-Width="150px"
+                                                    HeaderStyle-Font-Size="Smaller" HeaderText="User Name" FilterControlWidth="100%"
+                                                    CurrentFilterFunction="Contains" AutoPostBackOnFilter="true" ShowFilterIcon="false"
+                                                    HeaderStyle-Font-Bold="true" UniqueName="UserName">
+                                                </telerik:GridBoundColumn>
 
-                                            <telerik:GridBoundColumn DataField="Email" AllowFiltering="true" HeaderStyle-Width="150px"
-                                                HeaderStyle-Font-Size="Smaller" HeaderText="Email" FilterControlWidth="100%"
-                                                CurrentFilterFunction="Contains" AutoPostBackOnFilter="true" ShowFilterIcon="false"
-                                                HeaderStyle-Font-Bold="true" UniqueName="Email">
-                                            </telerik:GridBoundColumn>
-                                             <telerik:GridBoundColumn DataField="UserType" AllowFiltering="true" HeaderStyle-Width="150px"
-                                                HeaderStyle-Font-Size="Smaller" HeaderText="Data Level Access" FilterControlWidth="100%"
-                                                CurrentFilterFunction="Contains" AutoPostBackOnFilter="true" ShowFilterIcon="false"
-                                                HeaderStyle-Font-Bold="true" UniqueName="UserType">
-                                            </telerik:GridBoundColumn>
+                                                <telerik:GridBoundColumn DataField="Email" AllowFiltering="true" HeaderStyle-Width="150px"
+                                                    HeaderStyle-Font-Size="Smaller" HeaderText="Email" FilterControlWidth="100%"
+                                                    CurrentFilterFunction="Contains" AutoPostBackOnFilter="true" ShowFilterIcon="false"
+                                                    HeaderStyle-Font-Bold="true" UniqueName="Email">
+                                                </telerik:GridBoundColumn>
+                                                <telerik:GridBoundColumn DataField="UserType" AllowFiltering="true" HeaderStyle-Width="150px"
+                                                    HeaderStyle-Font-Size="Smaller" HeaderText="Data Level Access" FilterControlWidth="100%"
+                                                    CurrentFilterFunction="Contains" AutoPostBackOnFilter="true" ShowFilterIcon="false"
+                                                    HeaderStyle-Font-Bold="true" UniqueName="UserType">
+                                                </telerik:GridBoundColumn>
 
-                                               <telerik:GridBoundColumn DataField="MapsDirectionAccess" AllowFiltering="true" HeaderStyle-Width="150px"
-                                                HeaderStyle-Font-Size="Smaller" HeaderText="Map Access" FilterControlWidth="100%"
-                                                CurrentFilterFunction="Contains" AutoPostBackOnFilter="true" ShowFilterIcon="false"
-                                                HeaderStyle-Font-Bold="true" UniqueName="MapsDirectionAccess">
-                                            </telerik:GridBoundColumn>
+                                                <telerik:GridBoundColumn DataField="MapsDirectionAccess" AllowFiltering="true" HeaderStyle-Width="150px"
+                                                    HeaderStyle-Font-Size="Smaller" HeaderText="Map Access" FilterControlWidth="100%"
+                                                    CurrentFilterFunction="Contains" AutoPostBackOnFilter="true" ShowFilterIcon="false"
+                                                    HeaderStyle-Font-Bold="true" UniqueName="MapsDirectionAccess">
+                                                </telerik:GridBoundColumn>
 
-                                            <telerik:GridBoundColumn DataField="IsCustomerConnectUser" AllowFiltering="true" HeaderStyle-Width="100px"
-                                                HeaderStyle-Font-Size="Smaller" HeaderText="Customer Connect User" FilterControlWidth="100%"
-                                                CurrentFilterFunction="Contains" AutoPostBackOnFilter="true" ShowFilterIcon="false"
-                                                HeaderStyle-Font-Bold="true" UniqueName="IsCustomerConnectUser">
-                                            </telerik:GridBoundColumn>
+                                                <telerik:GridBoundColumn DataField="IsCustomerConnectUser" AllowFiltering="true" HeaderStyle-Width="100px"
+                                                    HeaderStyle-Font-Size="Smaller" HeaderText="Customer Connect User" FilterControlWidth="100%"
+                                                    CurrentFilterFunction="Contains" AutoPostBackOnFilter="true" ShowFilterIcon="false"
+                                                    HeaderStyle-Font-Bold="true" UniqueName="IsCustomerConnectUser">
+                                                </telerik:GridBoundColumn>
 
-                                            <telerik:GridBoundColumn DataField="CreatedDate" AllowFiltering="true" HeaderStyle-Width="70px"
-                                                HeaderStyle-Font-Size="Smaller" HeaderText="Created" FilterControlWidth="100%"
-                                                CurrentFilterFunction="Contains" AutoPostBackOnFilter="true" ShowFilterIcon="false"
-                                                HeaderStyle-Font-Bold="true" UniqueName="CreatedDate">
-                                            </telerik:GridBoundColumn>
+                                                <telerik:GridBoundColumn DataField="CreatedDate" AllowFiltering="true" HeaderStyle-Width="70px"
+                                                    HeaderStyle-Font-Size="Smaller" HeaderText="Created" FilterControlWidth="100%"
+                                                    CurrentFilterFunction="Contains" AutoPostBackOnFilter="true" ShowFilterIcon="false"
+                                                    HeaderStyle-Font-Bold="true" UniqueName="CreatedDate">
+                                                </telerik:GridBoundColumn>
 
-                                            <telerik:GridBoundColumn DataField="Active" AllowFiltering="true" HeaderStyle-Width="60px"
-                                                HeaderStyle-Font-Size="Smaller" HeaderText="Status" FilterControlWidth="100%"
-                                                CurrentFilterFunction="Contains" AutoPostBackOnFilter="true" ShowFilterIcon="false"
-                                                HeaderStyle-Font-Bold="true" UniqueName="Active">
-                                            </telerik:GridBoundColumn>
+                                                <telerik:GridBoundColumn DataField="Active" AllowFiltering="true" HeaderStyle-Width="60px"
+                                                    HeaderStyle-Font-Size="Smaller" HeaderText="Status" FilterControlWidth="100%"
+                                                    CurrentFilterFunction="Contains" AutoPostBackOnFilter="true" ShowFilterIcon="false"
+                                                    HeaderStyle-Font-Bold="true" UniqueName="Active">
+                                                </telerik:GridBoundColumn>
 
-                                            <telerik:GridTemplateColumn HeaderStyle-Width="150px" AllowFiltering="false" HeaderText="" UniqueName="Cnf" HeaderStyle-Font-Size="Smaller" HeaderStyle-Font-Bold="true">
-                                                <ItemTemplate>
-                                                    <asp:LinkButton ID="lnkReset" runat="server" CssClass="btn btn-outline btn-outline-dashed btn-outline-info" Text="Reset Password" CommandName="Reset"></asp:LinkButton>
-                                                </ItemTemplate>
-                                            </telerik:GridTemplateColumn>
+                                                <telerik:GridTemplateColumn HeaderStyle-Width="150px" AllowFiltering="false" HeaderText="" UniqueName="Cnf" HeaderStyle-Font-Size="Smaller" HeaderStyle-Font-Bold="true">
+                                                    <ItemTemplate>
+                                                        <asp:LinkButton ID="lnkReset" runat="server" CssClass="btn btn-outline btn-outline-dashed btn-outline-info" Text="Reset Password" CommandName="Reset"></asp:LinkButton>
+                                                    </ItemTemplate>
+                                                </telerik:GridTemplateColumn>
 
-                                            
 
-                                           
 
-                                        </Columns>
-                                    </MasterTableView>
-                                    <GroupingSettings CaseSensitive="false" />
-                                    <ClientSettings AllowDragToGroup="True" EnableRowHoverStyle="true" AllowColumnsReorder="True">
-                                        <Resizing AllowColumnResize="true"></Resizing>
-                                        <Selecting AllowRowSelect="True" EnableDragToSelectRows="true"></Selecting>
-                                    </ClientSettings>
-                                </telerik:RadGrid>
+
+
+                                            </Columns>
+                                        </MasterTableView>
+                                        <GroupingSettings CaseSensitive="false" />
+                                        <ClientSettings AllowDragToGroup="True" EnableRowHoverStyle="true" AllowColumnsReorder="True">
+                                            <Resizing AllowColumnResize="true"></Resizing>
+                                            <Selecting AllowRowSelect="True" EnableDragToSelectRows="true"></Selecting>
+                                        </ClientSettings>
+                                    </telerik:RadGrid>
+                                </div>
                             </div>
-                        </div>
                         </telerik:RadAjaxPanel>
                     </div>
                 </div>
@@ -170,7 +174,7 @@
     </div>
 
     <div class="clearfix"></div>
-    <div class="modal fade modal-center" id="modalConfirm" tabindex="-1" role="dialog" style="height:auto"  data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalLabels" aria-hidden="true">
+    <div class="modal fade modal-center" id="modalConfirm" tabindex="-1" role="dialog" style="height: auto" data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalLabels" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -197,7 +201,7 @@
     </div>
 
     <!--begin::SuccessModal-->
-    <div class="modal fade" id="kt_modal_1_4" tabindex="-1" role="dialog" style="height:auto"  aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="kt_modal_1_4" tabindex="-1" role="dialog" style="height: auto" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -215,7 +219,7 @@
     <!--end::SuccessModal-->
 
     <!--begin::FailureModal-->
-    <div class="modal fade" id="kt_modal_1_5" tabindex="-1" role="dialog" style="height:auto"  aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="kt_modal_1_5" tabindex="-1" role="dialog" style="height: auto" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -233,6 +237,24 @@
         </div>
     </div>
     <!--end::FailureModal-->
+
+    <!--begin::FailedModal License-->
+    <div class="modal fade" id="kt_modal_1_8" tabindex="-1" role="dialog" style="height: auto" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Oops..!</h5>
+                </div>
+                <div class="modal-body">
+                    <span id="Failure">Something went wrong, please try again later.</span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm fw-bold btn-secondary" onclick="cancelModal(kt_modal_1_8);">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end::FailedModal License-->
 
     <style type="text/css">
         .modal-center {

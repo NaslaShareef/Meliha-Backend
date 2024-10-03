@@ -40,7 +40,7 @@
             $('#kt_modal_1_71').modal('show');
             $('#kt_modal_1_7').modal('hide');
         }
-        
+
         function usrConfim() {
             $('#modalusrchangeConfirm').modal('show');
             $('#kt_modal_1_7').modal('hide');
@@ -49,7 +49,11 @@
             $('#modalusrchangeConfirm').modal('hide');
             $('#kt_modal_1_71').modal('hide');
         }
-        
+        function FailureLicense(c) {
+            $('#modalConfirm').modal('hide');
+            $('#kt_modal_1_8').modal('show');
+            $('#Failure').text(c);
+        }
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="Actions" runat="server">
@@ -1470,7 +1474,7 @@
             </div>
         </div>
     </div>
-<!----end  Assign user --->
+    <!----end  Assign user --->
 
     <div class="modal fade modal-center" id="modalusrchangeConfirm" tabindex="-1" role="dialog" style="height: auto" data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalLabels" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -1495,89 +1499,108 @@
             </div>
         </div>
     </div>
-<!----delete usr----->
-      <!--end::Assign user-->
-  <div class="modal fade" id="kt_modal_1_71" style="height: auto;" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h5 class="modal-title">Delete User</h5>
-              </div>
-              <div class="modal-body">
-                  <span></span>
-                  <div class="col-lg-12 row" style="padding-top: 10px;">
-                      <div class="col-lg-3 form-group">
-                          <label class="control-label col-lg-12">Current User : </label>
+    <!----delete usr----->
+    <!--end::Assign user-->
+    <div class="modal fade" id="kt_modal_1_71" style="height: auto;" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete User</h5>
+                </div>
+                <div class="modal-body">
+                    <span></span>
+                    <div class="col-lg-12 row" style="padding-top: 10px;">
+                        <div class="col-lg-3 form-group">
+                            <label class="control-label col-lg-12">Current User : </label>
 
 
-                      </div>
-                      <div class="col-lg-9 form-group">
-                          <asp:Label ID="lblcrntusr" class="control-label col-lg-12" runat="server" RenderMode="Lightweight" ForeColor="#3366cc"></asp:Label>
+                        </div>
+                        <div class="col-lg-9 form-group">
+                            <asp:Label ID="lblcrntusr" class="control-label col-lg-12" runat="server" RenderMode="Lightweight" ForeColor="#3366cc"></asp:Label>
 
 
-                      </div>
-                  </div>
-                  <div class="col-lg-12 row" style="padding-top: 10px;">
-
-                    
-                      <div class="col-lg-6 form-group" style="padding-top: 3px;">
-                          <label class="control-label col-lg-12">Effective Date</label>
-                          <div class="col-lg-12">
-                              <telerik:RadDatePicker RenderMode="Lightweight" ID="rdeffectivedatetodel" DateInput-DateFormat="dd-MMM-yyyy" runat="server" Width="100%">
-                              </telerik:RadDatePicker>
-
-                              <asp:RequiredFieldValidator ID="RequiredFieldValidator9" runat="server" Display="Dynamic" ErrorMessage="Date is mandatory" ForeColor="Red" ControlToValidate="rdeffectivedate" ValidationGroup="frrm"></asp:RequiredFieldValidator>
-                          </div>
-                      </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 row" style="padding-top: 10px;">
 
 
-                  </div>
-              </div>
+                        <div class="col-lg-6 form-group" style="padding-top: 3px;">
+                            <label class="control-label col-lg-12">Effective Date</label>
+                            <div class="col-lg-12">
+                                <telerik:RadDatePicker RenderMode="Lightweight" ID="rdeffectivedatetodel" DateInput-DateFormat="dd-MMM-yyyy" runat="server" Width="100%">
+                                </telerik:RadDatePicker>
+
+                                <asp:RequiredFieldValidator ID="RequiredFieldValidator9" runat="server" Display="Dynamic" ErrorMessage="Date is mandatory" ForeColor="Red" ControlToValidate="rdeffectivedate" ValidationGroup="frrm"></asp:RequiredFieldValidator>
+                            </div>
+                        </div>
 
 
-              <div class="modal-footer">
-                  <telerik:RadAjaxPanel ID="RadAjaxPanel8" runat="server" LoadingPanelID="RadAjaxLoadingPanel2">
+                    </div>
+                </div>
 
-                      <asp:LinkButton ID="lnkdeleteusr" runat="server" CssClass="btn btn-sm fw-bold btn-success" ValidationGroup="frrm" CausesValidation="true" OnClick="lnkdeleteusr_Click">
+
+                <div class="modal-footer">
+                    <telerik:RadAjaxPanel ID="RadAjaxPanel8" runat="server" LoadingPanelID="RadAjaxLoadingPanel2">
+
+                        <asp:LinkButton ID="lnkdeleteusr" runat="server" CssClass="btn btn-sm fw-bold btn-success" ValidationGroup="frrm" CausesValidation="true" OnClick="lnkdeleteusr_Click">
                                               Remove
-                      </asp:LinkButton>
-                  </telerik:RadAjaxPanel>
-                  <telerik:RadAjaxLoadingPanel runat="server" Skin="Sunset" ID="RadAjaxLoadingPanel9" EnableEmbeddedSkins="false"
-                      BackColor="Transparent"
-                      ForeColor="Blue">
-                      <div class="col-lg-12 text-center mt-5">
-                          <img alt="Loading..." src="../assets/media/bg/loader.gif" style="border: 0px;" />
-                      </div>
-                  </telerik:RadAjaxLoadingPanel>
-                  <br />
-                  <button type="button" class="btn btn-sm fw-bold btn-secondary" onclick="cancelModal(kt_modal_1_71);">Cancel</button>
-              </div>
-          </div>
-      </div>
-  </div>
+                        </asp:LinkButton>
+                    </telerik:RadAjaxPanel>
+                    <telerik:RadAjaxLoadingPanel runat="server" Skin="Sunset" ID="RadAjaxLoadingPanel9" EnableEmbeddedSkins="false"
+                        BackColor="Transparent"
+                        ForeColor="Blue">
+                        <div class="col-lg-12 text-center mt-5">
+                            <img alt="Loading..." src="../assets/media/bg/loader.gif" style="border: 0px;" />
+                        </div>
+                    </telerik:RadAjaxLoadingPanel>
+                    <br />
+                    <button type="button" class="btn btn-sm fw-bold btn-secondary" onclick="cancelModal(kt_modal_1_71);">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- end delete usr-->
-       <div class="modal fade modal-center" id="modalusrremoveConfirm" tabindex="-1" role="dialog" style="height: auto" data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalLabels" aria-hidden="true">
-       <div class="modal-dialog" role="document">
-           <div class="modal-content">
-               <div class="modal-header">
-                   <h5 class="modal-title" id="usrremoveConfirm">Are you sure you want to remove user..??
-                   </h5>
-               </div>
-               <div class="modal-footer">
-                   <telerik:RadAjaxPanel ID="RadAjaxPanel9" runat="server" LoadingPanelID="RadAjaxLoadingPanel2">
-                       <asp:LinkButton ID="lnkusrremove" runat="server" Text="Yes" OnClick="lnkusrremove_Click" CssClass="btn btn-sm fw-bold btn-primary" />
-                   </telerik:RadAjaxPanel>
-                   <telerik:RadAjaxLoadingPanel runat="server" Skin="Sunset" ID="RadAjaxLoadingPanel10" EnableEmbeddedSkins="false"
-                       BackColor="Transparent"
-                       ForeColor="Blue">
-                       <div class="col-lg-12 text-center mt-5">
-                           <img alt="Loading..." src="../assets/media/icons/loader.gif" style="border: 0px;" />
-                       </div>
-                   </telerik:RadAjaxLoadingPanel>
-                   <button type="button" class="btn btn-sm fw-bold btn-secondary" onclick="cancelModal(modalusrremoveConfirm);">Cancel</button>
-               </div>
-           </div>
-       </div>
-   </div>
+    <div class="modal fade modal-center" id="modalusrremoveConfirm" tabindex="-1" role="dialog" style="height: auto" data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalLabels" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="usrremoveConfirm">Are you sure you want to remove user..??
+                    </h5>
+                </div>
+                <div class="modal-footer">
+                    <telerik:RadAjaxPanel ID="RadAjaxPanel9" runat="server" LoadingPanelID="RadAjaxLoadingPanel2">
+                        <asp:LinkButton ID="lnkusrremove" runat="server" Text="Yes" OnClick="lnkusrremove_Click" CssClass="btn btn-sm fw-bold btn-primary" />
+                    </telerik:RadAjaxPanel>
+                    <telerik:RadAjaxLoadingPanel runat="server" Skin="Sunset" ID="RadAjaxLoadingPanel10" EnableEmbeddedSkins="false"
+                        BackColor="Transparent"
+                        ForeColor="Blue">
+                        <div class="col-lg-12 text-center mt-5">
+                            <img alt="Loading..." src="../assets/media/icons/loader.gif" style="border: 0px;" />
+                        </div>
+                    </telerik:RadAjaxLoadingPanel>
+                    <button type="button" class="btn btn-sm fw-bold btn-secondary" onclick="cancelModal(modalusrremoveConfirm);">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--begin::FailedModal License-->
+    <div class="modal fade" id="kt_modal_1_8" tabindex="-1" role="dialog" style="height: auto" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Oops..!</h5>
+                </div>
+                <div class="modal-body">
+                    <span id="Failure">Something went wrong, please try again later.</span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm fw-bold btn-secondary" onclick="cancelModal(kt_modal_1_8);">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end::FailedModal License-->
+
 </asp:Content>

@@ -19,10 +19,10 @@
             $('#kt_modal_1_8').modal('show');
 
         }
-        function FailureLicense(b) {
+        function FailureLicense(c) {
             $('#modalConfirm').modal('hide');
-            $('#kt_modal_1_6').modal('show');
-            $('#Failure').text(b);
+            $('#kt_modal_1_9').modal('show');
+            $('#Failure').text(c);
         }
     </script>
 
@@ -139,9 +139,9 @@
                                         </div>
 
                                     </div>
-                                   
+
                                     <asp:PlaceHolder runat="server" ID="SM">
-                                       
+
 
                                         <div class="col-lg-4 form-group" style="padding-top: 10px;">
                                             <label class="control-label col-lg-12">Region Manager<span class="required"></span></label>
@@ -164,7 +164,7 @@
 
                                     <asp:PlaceHolder runat="server" ID="DM">
 
-                                       
+
                                         <div class="col-lg-4 form-group" style="padding-top: 10px;">
                                             <label class="control-label col-lg-12">Region Manager<span class="required"></span></label>
                                             <div class="col-lg-12">
@@ -199,7 +199,7 @@
 
                                     </asp:PlaceHolder>
                                     <asp:PlaceHolder runat="server" ID="DAM">
-                                      
+
 
                                         <div class="col-lg-4 form-group" style="padding-top: 10px;">
                                             <label class="control-label col-lg-12">Region Manager<span class="required"></span></label>
@@ -249,7 +249,7 @@
 
 
                                     <asp:PlaceHolder runat="server" ID="DSAM">
-                                       
+
 
                                         <div class="col-lg-4 form-group" style="padding-top: 10px;">
                                             <label class="control-label col-lg-12">Region Manager<span class="required"></span></label>
@@ -310,38 +310,38 @@
                                     </asp:PlaceHolder>
 
 
-                                       <div class="col-lg-4 form-group" style="padding-top: 10px;">
-                                            <label class="control-label col-lg-12">Roles<span class="required"></span></label>
-                                            <div class="col-lg-12">
-                                                <telerik:RadComboBox ID="rdRoles" CheckBoxes="true" EmptyMessage="Select Roles" CausesValidation="false" AutoPostBack="true" EnableCheckAllItemsCheckBox="true" Width="100%" runat="server"></telerik:RadComboBox>
+                                    <div class="col-lg-4 form-group" style="padding-top: 10px;">
+                                        <label class="control-label col-lg-12">Roles<span class="required"></span></label>
+                                        <div class="col-lg-12">
+                                            <telerik:RadComboBox ID="rdRoles" CheckBoxes="true" EmptyMessage="Select Roles" CausesValidation="false" AutoPostBack="true" EnableCheckAllItemsCheckBox="true" Width="100%" runat="server"></telerik:RadComboBox>
 
-                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator11" runat="server"
-                                                    ControlToValidate="rdRoles" ErrorMessage="Please select any Roles" Display="Dynamic" ForeColor="Red"
-                                                    SetFocusOnError="True"></asp:RequiredFieldValidator>
+                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator11" runat="server"
+                                                ControlToValidate="rdRoles" ErrorMessage="Please select any Roles" Display="Dynamic" ForeColor="Red"
+                                                SetFocusOnError="True"></asp:RequiredFieldValidator>
 
-
-                                            </div>
 
                                         </div>
 
-
-                                     <div class="col-lg-4 form-group" style="padding-top: 10px;">
-                                    <label class="control-label col-lg-12">Map Access<span class="required"></span></label>
-                                    <div class="col-lg-12">
-                                        <telerik:RadDropDownList ID="ddlAccess" runat="server" Width="100%">
-                                            <Items>
-                                               
-                                                <telerik:DropDownListItem Text="Disable" Value="N" />
-                                                 <telerik:DropDownListItem Text="Enable" Value="Y" />
-                                            </Items>
-                                        </telerik:RadDropDownList>
-                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator14" runat="server" Display="Dynamic" ValidationGroup="form"
-                                            ControlToValidate="ddlAccess" ErrorMessage="Please select Map Access" ForeColor="Red"
-                                            SetFocusOnError="True"></asp:RequiredFieldValidator>
                                     </div>
-                                  </div>
-                                   
-                                            <%--<div class="col-lg-4 form-group" style="padding-top: 10px;">
+
+
+                                    <div class="col-lg-4 form-group" style="padding-top: 10px;">
+                                        <label class="control-label col-lg-12">Map Access<span class="required"></span></label>
+                                        <div class="col-lg-12">
+                                            <telerik:RadDropDownList ID="ddlAccess" runat="server" Width="100%">
+                                                <Items>
+
+                                                    <telerik:DropDownListItem Text="Disable" Value="N" />
+                                                    <telerik:DropDownListItem Text="Enable" Value="Y" />
+                                                </Items>
+                                            </telerik:RadDropDownList>
+                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator14" runat="server" Display="Dynamic" ValidationGroup="form"
+                                                ControlToValidate="ddlAccess" ErrorMessage="Please select Map Access" ForeColor="Red"
+                                                SetFocusOnError="True"></asp:RequiredFieldValidator>
+                                        </div>
+                                    </div>
+
+                                    <%--<div class="col-lg-4 form-group" style="padding-top: 10px;">
                                                 <label class="control-label col-lg-12">Map Access<span class="required"></span></label>
                                                 <div class="col-lg-12">
                                                     <telerik:RadDropDownList ID="MapAccess" runat="server" RenderMode="Lightweight" Width="100%" DefaultMessage="Please Select">
@@ -396,7 +396,7 @@
     </div>
 
     <div class="clearfix"></div>
-    <div class="modal fade modal-center" id="modalConfirm" tabindex="-1" role="dialog" style="height:auto" data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalLabels" aria-hidden="true">
+    <div class="modal fade modal-center" id="modalConfirm" tabindex="-1" role="dialog" style="height: auto" data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalLabels" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -422,7 +422,7 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="kt_modal_1_4" tabindex="-1" role="dialog" style="height:auto" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="kt_modal_1_4" tabindex="-1" role="dialog" style="height: auto" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -438,14 +438,14 @@
         </div>
     </div>
 
-     <div class="modal fade" id="kt_modal_1_8" tabindex="-1" role="dialog" style="height:auto" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="kt_modal_1_8" tabindex="-1" role="dialog" style="height: auto" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Oops!...</h5>
                 </div>
                 <div class="modal-body">
-                    <span id="Fail" >User already exists....</span>
+                    <span id="Fail">User already exists....</span>
                 </div>
                 <div class="modal-footer">
                     <asp:LinkButton ID="LinkButton1" runat="server" CssClass="btn btn-sm fw-bold btn-secondary">Ok</asp:LinkButton>
@@ -454,23 +454,23 @@
         </div>
     </div>
 
-        <!--begin::FailedModal License-->
-<div class="modal fade" id="kt_modal_1_6" tabindex="-1" role="dialog" style="height:auto"  aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Oops..!</h5>
-            </div>
-            <div class="modal-body">
-                <span id="Failure">Something went wrong, please try again later.</span>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-sm fw-bold btn-secondary" onclick="cancelModal(kt_modal_1_6);">Ok</button>
+    <!--begin::FailedModal License-->
+    <div class="modal fade" id="kt_modal_1_9" tabindex="-1" role="dialog" style="height: auto" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Oops..!</h5>
+                </div>
+                <div class="modal-body">
+                    <span id="Failure">Something went wrong, please try again later.</span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm fw-bold btn-secondary" onclick="cancelModal(kt_modal_1_9);">Ok</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<!--end::FailedModal License-->
+    <!--end::FailedModal License-->
 
     <style type="text/css">
         .modal-center {
