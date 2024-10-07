@@ -34,15 +34,63 @@ namespace SalesForceAutomation.BO_Digits.en
                     {
                         if (Session["FromDate"] != null)
                         {
-                            rdDate.SelectedDate = DateTime.Parse(Session["FromDate"].ToString());
-                        }                      
+                            rdFromDate.SelectedDate = DateTime.Parse(Session["FromDate"].ToString());
+                        }
+                        else
+                        {
+                            rdFromDate.SelectedDate = DateTime.Now;
+                            Session["FromDate"] = rdFromDate.SelectedDate.ToString();
+                        }
+                        if (Session["ToDate"] != null)
+                        {
+                            rdEndDate.SelectedDate = DateTime.Parse(Session["ToDate"].ToString());
 
+                        }
+                        else
+                        {
+                            rdEndDate.SelectedDate = DateTime.Now;
+                            Session["ToDate"] = rdEndDate.SelectedDate.ToString();
+                        }
 
                     }
                     catch (Exception ex)
                     {
                         Response.Redirect("~/SignIn.aspx");
                     }
+
+
+                }
+                else if (Mode == 2) // While loading page from customer dashboard 
+                {
+                    try
+                    {
+                        if (Session["FromDate"] != null)
+                        {
+                            rdFromDate.SelectedDate = DateTime.Parse(Session["FromDate"].ToString());
+                        }
+                        else
+                        {
+                            rdFromDate.SelectedDate = DateTime.Now;
+                            Session["FromDate"] = rdFromDate.SelectedDate.ToString();
+                        }
+                        if (Session["ToDate"] != null)
+                        {
+                            rdEndDate.SelectedDate = DateTime.Parse(Session["ToDate"].ToString());
+
+                        }
+                        else
+                        {
+                            rdEndDate.SelectedDate = DateTime.Now;
+                            Session["ToDate"] = rdEndDate.SelectedDate.ToString();
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Response.Redirect("~/SignIn.aspx");
+                    }
+
+
                 }
                 else
                 {
@@ -53,18 +101,32 @@ namespace SalesForceAutomation.BO_Digits.en
 
                     try
                     {
-                        rdDate.SelectedDate = DateTime.Now;
-                        // rdDate.SelectedDate = DateTime.Parse(Session["fdate"].ToString());
-                        //rdendDate.SelectedDate = DateTime.Parse(Session["ToDate"].ToString());
+                        if (Session["FromDate"] != null)
+                        {
+                            rdFromDate.SelectedDate = DateTime.Parse(Session["FromDate"].ToString());
+                        }
+                        else
+                        {
+                            rdFromDate.SelectedDate = DateTime.Now;
+                            Session["FromDate"] = rdFromDate.SelectedDate.ToString();
+                        }
+                        if (Session["ToDate"] != null)
+                        {
+                            rdEndDate.SelectedDate = DateTime.Parse(Session["ToDate"].ToString());
 
-                        //rdRoute.SelectedValue = Session["Route"].ToString();
+                        }
+                        else
+                        {
+                            rdEndDate.SelectedDate = DateTime.Now;
+                            Session["ToDate"] = rdEndDate.SelectedDate.ToString();
+                        }
                     }
                     catch (Exception ex)
                     {
 
                     }
                 }
-               
+
 
                 Route();
                 foreach (RadComboBoxItem itmss in rdRoute.Items)
@@ -87,10 +149,11 @@ namespace SalesForceAutomation.BO_Digits.en
         public void Route()
         {
             string fdate, todate;
-            fdate = DateTime.Parse(rdDate.SelectedDate.ToString()).ToString("yyyy-MM-dd");
-            //todate = DateTime.Parse(rdendDate.SelectedDate.ToString()).ToString("yyyy-MM-dd");
-            // string[] arr = { todate };
-            rdRoute.DataSource = ObjclsFrms.loadList("SelDeliveryRoute", "sp_Report", fdate);
+            fdate = DateTime.Parse(rdFromDate.SelectedDate.ToString()).ToString("yyyy-MM-dd");
+            todate = DateTime.Parse(rdEndDate.SelectedDate.ToString()).ToString("yyyy-MM-dd");
+            string[] arr = { todate };
+            rdRoute.DataSource = ObjclsFrms.loadList("SelDeliveryRoute", "sp_Report", fdate, arr);
+
             rdRoute.DataTextField = "rot_Name";
             rdRoute.DataValueField = "rot_ID";
             rdRoute.DataBind();
@@ -108,8 +171,10 @@ namespace SalesForceAutomation.BO_Digits.en
         }
         public void Customers()
         {
-            string fdate = DateTime.Parse(rdDate.SelectedDate.ToString()).ToString("yyyy-MM-dd");
-            rdCustomer.DataSource = ObjclsFrms.loadList("SelRouteCustomers", "sp_Report",fdate);
+            string fdate = DateTime.Parse(rdFromDate.SelectedDate.ToString()).ToString("yyyy-MM-dd");
+            string todate = DateTime.Parse(rdEndDate.SelectedDate.ToString()).ToString("yyyy-MM-dd");
+            string[] arr = { todate };
+            rdCustomer.DataSource = ObjclsFrms.loadList("SelRouteCustomers", "sp_Report", fdate, arr);
             rdCustomer.DataTextField = "cus_Name";
             rdCustomer.DataValueField = "cus_ID";
             rdCustomer.DataBind();
@@ -208,10 +273,13 @@ namespace SalesForceAutomation.BO_Digits.en
             string mainCondition = " ord_AssignedRot in (" + rotID + ")";
             try
             {
-                string fromDate = DateTime.Parse(rdDate.SelectedDate.ToString()).ToString("yyyy-MM-dd");
-                //string endDate = DateTime.Parse(rdendDate.SelectedDate.ToString()).ToString("yyyy-MM-dd");
-                dateCondition = " and (cast(B.ord_ExpectedDelDate as date) = cast('" + fromDate + "' as date)) ";
+                string fromDate = DateTime.Parse(rdFromDate.SelectedDate.ToString()).ToString("yyyy-MM-dd");
+                string endDate = DateTime.Parse(rdEndDate.SelectedDate.ToString()).ToString("yyyy-MM-dd");
+               
+                dateCondition = " and (cast(B.ord_ExpectedDelDate as date) between cast('" + fromDate + "' as date) and cast('" + endDate + "' as date))";
+                //dateCondition = " and (cast(B.ord_ExpectedDelDate as date) = cast('" + fromDate + "' as date)) ";
                 //and cast('" + endDate + "' as date))";
+
                 if (cusID.Equals("0"))
                 {
                     customerCondition = "";

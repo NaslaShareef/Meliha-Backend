@@ -13,6 +13,27 @@ namespace SalesForceAutomation.BO_Digits.en
     public partial class OrderStatusDashboard : System.Web.UI.Page
     {
         GeneralFunctions ObjclsFrms = new GeneralFunctions();
+
+        public string Type
+        {
+            get
+            {
+                string Type;
+                Type = (Request.Params["type"]);
+
+                return Type;
+            }
+        }
+        public int Mode
+        {
+            get
+            {
+                int Mode;
+                int.TryParse(Request.Params["mode"], out Mode);
+
+                return Mode;
+            }
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!Page.IsPostBack)
@@ -64,19 +85,38 @@ namespace SalesForceAutomation.BO_Digits.en
                         R++;
                     }
                     rotID = Rot();
-                }
-              //  rdfromDate.SelectedDate = DateTime.Now;
-
-                string routeCondition = " ord_rot_ID in (" + rotID + ")";
-               
-
+                }      
+                string routeCondition = " ord_rot_ID in (" + rotID + ")";    
                 Customers(routeCondition);
-                int i= 1;
-                foreach (RadComboBoxItem itmss in rdCustomer.Items)
+
+                if (Mode == 1 && Session["OSDcusID"] != null)
                 {
-                    itmss.Checked = true;
-                    i++;
+                    int a = rdCustomer.Items.Count;
+                    string cusID = Session["OSDcusID"].ToString();
+                    string[] ar = cusID.Split(',');
+                    for (int i = 0; i < ar.Length; i++)
+                    {
+                        foreach (RadComboBoxItem items in rdCustomer.Items)
+                        {
+                            if (items.Value == ar[i])
+                            {
+                                items.Checked = true;
+                            }
+                        }
+                    }
+
                 }
+                else
+                {
+                    int i = 1;
+                    foreach (RadComboBoxItem itmss in rdCustomer.Items)
+                    {
+                        itmss.Checked = true;
+                        i++;
+                    }
+                }
+
+
                 rotID = Rot();
                 LoadQuotation();
                 LoadSalesOrder();
