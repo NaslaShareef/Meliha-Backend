@@ -102,22 +102,42 @@ namespace SalesForceAutomation.BO_Digits.en
                 Route(dposubareacondition);
                 string rotID;
                 //Route();
-                
-               
+
+
 
                 if (Session["Route"] != null)
-                {                    
+                {
                     rotID = Session["Route"].ToString();
-                    string cleanedString = rotID.Replace("<?xml version=\"1.0\" encoding=\"utf-16\" standalone=\"yes\"?>", "")
-                                   .Replace("<r>", "")
-                                   .Replace("</r>", "")
-                                   .Replace("<Values><rotID>", "")
-                                   .Replace("</rotID></Values>", ",");
 
-                    cleanedString = cleanedString.Trim(',');
+                    if (rotID.StartsWith("<?xml"))
+                    {
+                        string cleanedString = rotID.Replace("<?xml version=\"1.0\" encoding=\"utf-16\" standalone=\"yes\"?>", "")
+                                           .Replace("<r>", "")
+                                           .Replace("</r>", "")
+                                           .Replace("<Values><rotID>", "")
+                                           .Replace("</rotID></Values>", ",");
 
-                    string[] ar = cleanedString.Split(',');
-                    
+                        cleanedString = cleanedString.Trim(',');
+                        rotID = cleanedString;
+                    }
+                    else
+                    {
+                        string[] routeIds = rotID.Split(',');
+                        rotID = "<?xml version=\"1.0\" encoding=\"utf-16\" standalone=\"yes\"?><r>";
+                        foreach (string id in routeIds)
+                        {
+                            rotID += $"<Values><rotID>{id}</rotID></Values>";
+                        }
+                        rotID += "</r>";
+                    }
+
+                    string[] ar = rotID.Replace("<?xml version=\"1.0\" encoding=\"utf-16\" standalone=\"yes\"?>", "")
+                                       .Replace("<r>", "")
+                                       .Replace("</r>", "")
+                                       .Replace("<Values><rotID>", "")
+                                       .Replace("</rotID></Values>", ",")
+                                       .Trim(',')
+                                       .Split(',');
                     foreach (RadComboBoxItem item in ddlRoute.Items)
                     {
                         if (ar.Contains(item.Value))
@@ -129,8 +149,10 @@ namespace SalesForceAutomation.BO_Digits.en
                 else
                 {
                     RouteFromTransaction();
-                    rotID = Rot();                    
+                    rotID = Rot();
                 }
+
+
 
                 try
                 {
