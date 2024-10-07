@@ -252,17 +252,9 @@ namespace SalesForceAutomation.BO_Digits.en
             string mainCondition = "";
             mainCondition = mainConditions(rotID);
 
-            DataTable dt = ObjclsFrms.loadList(mode, "sp_Report", mainCondition);
-            //if (mode== "SelecttotOrder")
-            //{
-                
-            //    Customer(dt);
-            //}
-           
+            DataTable dt = ObjclsFrms.loadList(mode, "sp_Report", mainCondition);          
            
             return dt;
-
-
 
         }
         public string mainConditions(string rotID)
