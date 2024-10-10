@@ -103,8 +103,6 @@ namespace SalesForceAutomation.BO_Digits.en
                 string rotID;
                 //Route();
 
-
-
                 if (Session["Route"] != null)
                 {
                     rotID = Session["Route"].ToString();

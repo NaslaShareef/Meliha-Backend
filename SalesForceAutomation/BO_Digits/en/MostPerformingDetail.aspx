@@ -4,12 +4,12 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="PageHeader" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="Actions" runat="server">
-     <telerik:RadAjaxPanel ID="RadAjaxPanel1" runat="server" LoadingPanelID="RadAjaxLoadingPanel2">
+    <%-- <telerik:RadAjaxPanel ID="RadAjaxPanel1" runat="server" LoadingPanelID="RadAjaxLoadingPanel2">--%>
      <a class="btn btn-sm fw-bold btn-secondary" href="ChartDashboard.aspx" style="margin-top:-37px;"> Cancel </a>
                                  
-   <asp:ImageButton ID="imgExcel" runat="server" ImageUrl="../assets/media/icons/excel.png" Height="50" ToolTip="Download" OnClick="imgExcel_Click" AlternateText="Xlsx" />
+   <asp:ImageButton ID="imgExcel" runat="server" ImageUrl="../assets/media/icons/excel.png" Height="50" ToolTip="Download" OnClick="imgExcel_Click" AlternateText="Xlsx" style="margin-top:-37px;" />
 
-             
+    <%--         
       </telerik:RadAjaxPanel>
                         <telerik:RadAjaxLoadingPanel runat="server" Skin="Sunset" ID="RadAjaxLoadingPanel2" EnableEmbeddedSkins="false"
                             BackColor="Transparent"
@@ -17,7 +17,7 @@
                             <div class="col-lg-12 text-center mt-5">
                                 <img alt="Loading..." src="../assets/media/bg/loader.gif" style="border: 0px;" />
                             </div>
-                        </telerik:RadAjaxLoadingPanel>   
+                        </telerik:RadAjaxLoadingPanel>   --%>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MainContent" runat="server">
       <telerik:RadAjaxManager ID="RadAjaxManager1" runat="server">
@@ -33,6 +33,7 @@
         </UpdatedControls>
         </telerik:AjaxSetting>
     </AjaxSettings>
+
     </telerik:RadAjaxManagerProxy>
 
       <div class="card-body" style="background-color:white; padding:20px;">

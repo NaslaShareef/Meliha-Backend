@@ -19,6 +19,7 @@ namespace SalesForceAutomation.BO_Digits.en
         {
             if (!Page.IsPostBack)
             {
+                LoadList();
             }
         }
         public void LoadList()

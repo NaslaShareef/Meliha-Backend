@@ -435,5 +435,26 @@ namespace SalesForceAutomation.BO_Digits.en
                 ScriptManager.RegisterClientScriptBlock(this.Page, this.GetType(), "tmp", "<script type='text/javascript'>failedModal();</script>", false);
             }
         }
+
+        protected void grvRpt_ItemDataBound(object sender, GridItemEventArgs e)
+        {
+            if (e.Item is GridDataItem)
+            {
+                GridDataItem item = (GridDataItem)e.Item;
+                ImageButton CCBtn = (ImageButton)item.FindControl("CCSettings");
+
+                string IsCustomerConnectUser = item["IsCustomerConnectUser"].Text.ToString();
+
+                if (IsCustomerConnectUser == "Enable")
+                {
+                    CCBtn.Visible = true;
+                }
+                else
+                {
+                    CCBtn.Visible = false;
+                }
+            }
+
+        }       
     }
 }

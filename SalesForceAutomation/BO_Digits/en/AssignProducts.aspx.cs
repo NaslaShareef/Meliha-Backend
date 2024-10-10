@@ -18,33 +18,14 @@ namespace SalesForceAutomation.BO_Digits.en
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!Page.IsPostBack)
-            {
-                
-                //GetRouteFromGrid();
-                //Route(); 
-                //if (Session["Route"] == null || string.IsNullOrEmpty(Session["Route"].ToString()))
-                //{
-                //    lblErrorMessage.Text = "Please select at least one route.";
-                //    return;
-                //}
-                //else
-                //{
-                //    lblErrorMessage.Text = "";
-                //}
-
-                //string[] selectedRoutes = Session["Route"].ToString().Split(','); 
-                //foreach (RadComboBoxItem item in rdRoute.Items)
-                //{
-                //    bool routeSelected = selectedRoutes.Contains(item.Value);                    
-                //    item.Checked = routeSelected;
-                //}
+            { 
                 try
                 {
-                    GetGridSession1(RouteGrid, "AssProd");
+                    GetGridSession1(ProductGrid, "AssProd");
                     GetGridSession2(RadGrid1, "AssProd");
                     GetGridSession3(grvRpt, "AssProd");
 
-                    RouteGrid.Rebind();
+                    ProductGrid.Rebind();
                     RadGrid1.Rebind();
                     grvRpt.Rebind();
                 }
@@ -53,63 +34,13 @@ namespace SalesForceAutomation.BO_Digits.en
                 {
                     Response.Redirect("~/SignIn.aspx");
                 }
-
             }
         }
-
-
-        //public void Route()
-        //{
-        //    rdRoute.DataSource = obj.loadList("SelectRoutes", "sp_Merchandising");
-        //    rdRoute.DataTextField = "rot_Name";
-        //    rdRoute.DataValueField = "rot_ID";
-        //    rdRoute.DataBind();
-        //}
-
-        //public string Rot()
-        //{
-        //    var ColelctionMarket = rdRoute.CheckedItems;
-        //    string rotID = "";
-        //    int j = 0;
-        //    int MarCount = ColelctionMarket.Count;
-        //    if (ColelctionMarket.Count > 1)
-        //    {
-        //        foreach (var item in ColelctionMarket)
-        //        {
-        //            //where 1 = 1 
-        //            if (j == 0)
-        //            {
-        //                rotID += item.Value + ",";
-        //            }                   
-        //            else if (j > 0)
-        //            {
-        //                rotID += item.Value + ",";
-        //            }
-        //            if (j == (MarCount - 1))
-        //            {
-        //                rotID += item.Value;
-        //            }
-        //            j++;
-        //        }
-        //        return rotID;
-        //    }
-        //    else if (ColelctionMarket.Count == 1)
-        //    {
-        //        foreach (var item in ColelctionMarket)
-        //        {
-        //            rotID += item.Value;
-        //        }
-        //        return rotID;
-        //    }
-        //    else
-        //    {
-        //        return "";
-        //    }
-        //}
+        
         public void SaveData()
         {
-            string product = GetItemFromGrid();
-            string route = GetRouteFromGrid();
+            string route = GetItemFromGrid();
+            string product = GetProductFromGrid();
             RadNumericTextBox Highperc = (RadNumericTextBox)RadAjaxPanel3.FindControl("higherLimit");
             RadNumericTextBox Lowperc = (RadNumericTextBox)RadAjaxPanel3.FindControl("lowerLimit");
 
@@ -128,8 +59,8 @@ namespace SalesForceAutomation.BO_Digits.en
                         string HighPerc = Highperc.Text.ToString();
                         string LowPerc = Lowperc.Text.ToString();
                         string user = UICommon.GetCurrentUserID().ToString();
-                        string[] arr = { HighPerc, LowPerc , user, route.ToString()};
-                        string Value = obj.SaveData("sp_Merchandising", "AssignRouteProduct", product, arr);
+                        string[] arr = { HighPerc, LowPerc , user, product.ToString()};
+                        string Value = obj.SaveData("sp_Merchandising", "AssignRouteProduct", route, arr);
                         int res = Int32.Parse(Value.ToString());
                         if (res > 0)
                         {
@@ -155,8 +86,8 @@ namespace SalesForceAutomation.BO_Digits.en
         public void List()
         {
             string routesSelected = "";
-            routesSelected = GetRouteFromGrid();
-            //Session["Route"] = routesSelected.ToString();
+            routesSelected = GetProductFromGrid();
+           
             if (routesSelected== null)
             {
                 DataTable emptyTable = new DataTable();
@@ -179,17 +110,17 @@ namespace SalesForceAutomation.BO_Digits.en
         }
         public void Loaddata()
         {
-            string routesSelected = "";
-            routesSelected = GetRouteFromGrid();
-            //Session["Route"] = routesSelected.ToString();
-            if (routesSelected==null)
+            string prodSelected = "";
+            prodSelected = GetProductFromGrid();
+           
+            if (prodSelected == null)
             {                
                 DataTable emptyTable = new DataTable();
                 RadGrid1.DataSource = emptyTable;
             }
             else
             {
-                DataTable lstdata = obj.loadList("UnAssignedProducts", "sp_Merchandising", routesSelected.ToString());
+                DataTable lstdata = obj.loadList("UnAssignedRoutesperProduct", "sp_Merchandising", prodSelected.ToString());
                 if (lstdata.Rows.Count > 0)
                 {
                     RadGrid1.DataSource = lstdata;
@@ -211,7 +142,6 @@ namespace SalesForceAutomation.BO_Digits.en
         public void Delete()
         {
             try
-
             {
                 string ropid = GetItemFromGrid2();
                 DataTable lstData = new DataTable();
@@ -295,8 +225,8 @@ namespace SalesForceAutomation.BO_Digits.en
 
                     foreach (GridDataItem dr in selectedItems)
                     {
-                        string prd_ID = dr.GetDataKeyValue("prd_ID").ToString();
-                        createNode(prd_ID, writer);
+                        string rot_ID = dr.GetDataKeyValue("rot_ID").ToString();
+                        createNode(rot_ID, writer);
                     }
 
                     writer.WriteEndElement();
@@ -307,21 +237,21 @@ namespace SalesForceAutomation.BO_Digits.en
             }
         }
 
-        private void createNode(string prd_ID, XmlWriter writer)
+        private void createNode(string rot_ID, XmlWriter writer)
         {
             writer.WriteStartElement("Values");
 
-            writer.WriteStartElement("prd_ID");
-            writer.WriteString(prd_ID);
+            writer.WriteStartElement("rot_ID");
+            writer.WriteString(rot_ID);
             writer.WriteEndElement();
 
             writer.WriteEndElement();
         }
 
 
-        public string GetRouteFromGrid()
+        public string GetProductFromGrid()
         {
-            var selectedItems = RouteGrid.SelectedItems;
+            var selectedItems = ProductGrid.SelectedItems;
             
             if (selectedItems == null || selectedItems.Count == 0)
             {
@@ -335,8 +265,8 @@ namespace SalesForceAutomation.BO_Digits.en
 
                     foreach (GridDataItem dr in selectedItems)
                     {
-                        string rot_ID = dr.GetDataKeyValue("rot_ID").ToString();
-                        createNodeRot(rot_ID, writer);
+                        string prd_ID = dr.GetDataKeyValue("prd_ID").ToString();
+                        createNodeRot(prd_ID, writer);
                     }
 
                     writer.WriteEndElement(); 
@@ -346,11 +276,11 @@ namespace SalesForceAutomation.BO_Digits.en
             }
         }
 
-        private void createNodeRot(string rot_ID, XmlWriter writer)
+        private void createNodeRot(string prd_ID, XmlWriter writer)
         {
             writer.WriteStartElement("Values");
-            writer.WriteStartElement("rot_ID");
-            writer.WriteString(rot_ID);
+            writer.WriteStartElement("prd_ID");
+            writer.WriteString(prd_ID);
             writer.WriteEndElement();
 
             writer.WriteEndElement();
@@ -388,7 +318,6 @@ namespace SalesForceAutomation.BO_Digits.en
 
         protected void LinkButton3_Click(object sender, EventArgs e)
         {
-            //Session["Route"] = GetRouteFromGrid();
             Response.Redirect(Request.Url.ToString(), true);
         }
 
@@ -400,21 +329,20 @@ namespace SalesForceAutomation.BO_Digits.en
 
         protected void rdRoute_SelectedIndexChanged(object sender, RadComboBoxSelectedIndexChangedEventArgs e)
         {
-            //lblErrorMessage.Text = "";
             List();
             Loaddata();
         }
         
-        protected void RouteGrid_NeedDataSource(object sender, GridNeedDataSourceEventArgs e)
+        protected void ProductGrid_NeedDataSource(object sender, GridNeedDataSourceEventArgs e)
         {
-            DataTable lstdata = obj.loadList("SelectRoutes", "sp_Merchandising");
+            DataTable lstdata = obj.loadList("SelectProducts", "sp_Merchandising");
             if (lstdata.Rows.Count > 0)
             {
-                RouteGrid.DataSource = lstdata;
+                ProductGrid.DataSource = lstdata;
             }
             else
             {
-                RouteGrid.DataSource = null;
+                ProductGrid.DataSource = null;
             }
         }
 
@@ -472,7 +400,7 @@ namespace SalesForceAutomation.BO_Digits.en
                 }
                 if (filterExpression != string.Empty)
                 {
-                    RouteGrid.MasterTableView.FilterExpression = filterExpression;
+                    ProductGrid.MasterTableView.FilterExpression = filterExpression;
                 }
             }
             catch (Exception ex)

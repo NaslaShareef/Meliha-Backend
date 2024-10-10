@@ -92,6 +92,42 @@
                                 <!--end::Menu-->
                             </div>
                             <!--end::Menu wrapper-->
+
+                             <!--begin::License Alert-->
+
+                            <%-- Danger --%>
+
+                            <div class="col-lg-8 mt-2 d-flex justify-content-end">
+
+                                <div class="alert alert-custom alert-danger" id="DangerAlert" runat="server" visible="false" role="alert" style="position: relative;">
+                                    <div class="alert-icon"><i class="flaticon-warning"></i></div>
+                                    <div class="alert-text fs-8">
+                                        <asp:Label ID="lblDangerAlertMessage" runat="server"></asp:Label>
+                                    </div>
+                                </div>
+
+                                <%-- Warning --%>
+
+                                <div class="alert alert-custom alert-warning" id="WarningAlert" runat="server" visible="false" role="alert">
+                                    <div class="alert-icon"><i class="flaticon-warning"></i></div>
+                                    <div class="alert-text fs-8">
+                                        <asp:Label ID="lblWarningAlertMessage" runat="server"></asp:Label>
+                                    </div>
+                                </div>
+
+                                <%-- Primary --%>
+
+                                <div class="alert alert-custom alert-primary" id="PrimaryAlert" runat="server" visible="false" role="alert">
+                                    <div class="alert-icon"><i class="flaticon-warning"></i></div>
+                                    <div class="alert-text fs-8">
+                                        <asp:Label ID="lblPrimaryAlertMessage" runat="server"></asp:Label>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!--end::License Alert-->
+
                             <!--begin::Navbar-->
                             <div class="app-navbar flex-shrink-0">
                                 <!--begin::Search-->

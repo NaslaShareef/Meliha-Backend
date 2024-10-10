@@ -69,6 +69,61 @@ namespace SalesForceAutomation.BO_Digits.en
                         rotID = Rot();
                     }
                 }
+                else if (OutStandingMode == 2)                      // While loading page from customer Dashboard 
+                {
+                    if (Session["KPIRoute"] != null)
+                    {
+                        rotID = Session["KPIRoute"].ToString();
+                        string[] ar = rotID.Split(',');
+                        int k = 0;
+                        foreach (RadComboBoxItem items in rdRoute.Items)
+                        {
+                            if (k < ar.Length && items.Value == ar[k])
+                            {
+                                items.Checked = true;
+                                k++;
+                            }
+
+                        }
+
+                    }
+                    else
+                    {
+                        int i = 1;
+                        foreach (RadComboBoxItem itmss in rdRoute.Items)
+                        {
+                            itmss.Checked = true;
+                            i++;
+                        }
+                        rotID = Rot();
+                    }
+                    if (Session["OutcusID"] != null)
+                    {
+                        int a = rdCustomer.Items.Count;
+                        string cusID = Session["OutcusID"].ToString();
+                        string[] ar = cusID.Split(',');
+                        for (int i = 0; i < ar.Length; i++)
+                        {
+                            foreach (RadComboBoxItem items in rdCustomer.Items)
+                            {
+                                if (items.Value == ar[i])
+                                {
+                                    items.Checked = true;
+                                }
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        int i = 1;
+                        foreach (RadComboBoxItem itmss in rdCustomer.Items)
+                        {
+                            itmss.Checked = true;
+                            i++;
+                        }
+                    }
+                }
                 else                        // While loading page from RouteDashboard 
                 {
                     if (Session["KPIRoute"] != null)
@@ -170,13 +225,25 @@ namespace SalesForceAutomation.BO_Digits.en
             }
             string cusid = Cus();
 
-            if (cusid.Equals("oid_cus_ID"))
+            if (OutStandingMode == 2)
             {
-                CustomerCondition = "";
+                if (Session["OutcusID"] != null)
+                {
+                    cusid = Session["OutcusID"].ToString();
+                }
+
+                CustomerCondition = " and oid_cus_ID in ( " + cusid + " )";
             }
             else
             {
-                CustomerCondition = " and oid_cus_ID in ( " + cusid + " )";
+                if (cusid.Equals("oid_cus_ID"))
+                {
+                    CustomerCondition = "";
+                }
+                else
+                {
+                    CustomerCondition = " and oid_cus_ID in ( " + cusid + " )";
+                }
             }
 
             MainCondition += RouteCondition;

@@ -15,15 +15,6 @@ namespace SalesForceAutomation.BO_Digits.en
     {
 
         /// <summary>
-        /// RadAjaxPanel1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Telerik.Web.UI.RadAjaxPanel RadAjaxPanel1;
-
-        /// <summary>
         /// imgExcel control.
         /// </summary>
         /// <remarks>
@@ -31,15 +22,6 @@ namespace SalesForceAutomation.BO_Digits.en
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton imgExcel;
-
-        /// <summary>
-        /// RadAjaxLoadingPanel2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Telerik.Web.UI.RadAjaxLoadingPanel RadAjaxLoadingPanel2;
 
         /// <summary>
         /// RadAjaxManager1 control.

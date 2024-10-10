@@ -1801,16 +1801,16 @@ namespace SalesForceAutomation.BO_Digits.en
             TimeSpan difference = endDate - fromDate;
             int numberOfDays = difference.Days;
 
-            if (fromDateStr == endDateStr)
-            {
+            //if (fromDateStr == endDateStr)
+            //{
                 ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "tmp", "<script type='text/javascript'>Confim();</script>", false);
-            }
+            //}
 
-            else
-            {
-                ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "tmp", "<script type='text/javascript'>FailureAlert(' From Date and To Date should be same');</script>", false);
+            //else
+            //{
+            //    ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "tmp", "<script type='text/javascript'>FailureAlert(' From Date and To Date should be same');</script>", false);
 
-            }
+            //}
 
         }
         protected void lnkSalesReturnByArea_Click(object sender, EventArgs e)

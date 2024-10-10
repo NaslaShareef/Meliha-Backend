@@ -58,6 +58,7 @@
                                         ShowFooter="True" AllowSorting="True"
                                         OnNeedDataSource="grvRpt_NeedDataSource"
                                         OnItemCommand="grvRpt_ItemCommand"
+                                        OnItemDataBound="grvRpt_ItemDataBound"
                                         AllowFilteringByColumn="true"
                                         ClientSettings-Resizing-ClipCellContentOnResize="true"
                                         EnableAjaxSkinRendering="true"
@@ -152,12 +153,9 @@
                                                     </ItemTemplate>
                                                 </telerik:GridTemplateColumn>
 
-
-
-
-
                                             </Columns>
                                         </MasterTableView>
+                                       
                                         <GroupingSettings CaseSensitive="false" />
                                         <ClientSettings AllowDragToGroup="True" EnableRowHoverStyle="true" AllowColumnsReorder="True">
                                             <Resizing AllowColumnResize="true"></Resizing>
