@@ -133,7 +133,6 @@ namespace SalesForceAutomation.BO_Digits.en
                     treeNode.ImageUrl = "../assets/media/Security/folder.png";
                 }
 
-
                 this.treeSecurity.Nodes.Add(treeNode);
 
                 this.AddTreeNode(treeNode, dr["fac_ID"].ToString());

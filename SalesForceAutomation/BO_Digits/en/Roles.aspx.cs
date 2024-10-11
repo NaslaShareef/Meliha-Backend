@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Telerik.Web.UI;
 
 namespace SalesForceAutomation.BO_Digits.en
 {
@@ -27,7 +28,6 @@ namespace SalesForceAutomation.BO_Digits.en
                 grvRpt.DataSource = lstRole;
             }
         }
-
         internal static void CreateRole(string text)
         {
             throw new NotImplementedException();
@@ -47,5 +47,23 @@ namespace SalesForceAutomation.BO_Digits.en
         {
             throw new NotImplementedException();
         }
+
+        protected void grvRpt_ItemCommand(object sender, GridCommandEventArgs e)
+        {
+            if (e.CommandName.Equals("Edit"))
+            {
+                GridDataItem dataItem = e.Item as GridDataItem;
+                string ID = dataItem.GetDataKeyValue("RoleId").ToString();
+                Response.Redirect("AddRole.aspx?Id=" + ID);
+            }
+
+            if (e.CommandName.Equals("Roles"))
+            {
+                GridDataItem dataItem = e.Item as GridDataItem;
+                string ID = dataItem.GetDataKeyValue("RoleId").ToString();
+                Response.Redirect("AssignPagesAlongRoles.aspx?Id=" + ID);
+            }
+        }
+
     }
 }
