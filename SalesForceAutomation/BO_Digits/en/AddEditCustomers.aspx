@@ -610,7 +610,7 @@
                               <label class="control-label col-lg-12">Close Customer </label>
                               <div class="col-lg-12">
                                   <asp:RadioButtonList ID="rblStatus" runat="server" RepeatDirection="Horizontal">                                    
-                                          <asp:ListItem Text="Close" Value="N" style="margin-right: 10px;"></asp:ListItem>
+                                          <asp:ListItem Text="Close" Value="Y" style="margin-right: 10px;"></asp:ListItem>
                                       </asp:RadioButtonList>                               
                                   <asp:RequiredFieldValidator ID="RequiredFieldValidator71" runat="server" ValidationGroup="form"
                                       ControlToValidate="rblStatus" ErrorMessage="Please select Status" ForeColor="Red" Display="Dynamic"

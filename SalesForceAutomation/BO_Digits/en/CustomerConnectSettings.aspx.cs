@@ -84,7 +84,6 @@ namespace SalesForceAutomation.BO_Digits.en
             addTable();
             LoadData();
             grvRpt.DataBind();
-
         }
         public void addTable()
         {

@@ -1897,6 +1897,10 @@ namespace SalesForceAutomation.BO_Digits.en
             string CloseStatus = rblStatus.SelectedValue;
             if (string.IsNullOrEmpty(CloseStatus))
             {
+                CloseStatus = "N";
+            }
+            else
+            {
                 CloseStatus = "Y";
             }
 
@@ -3909,7 +3913,8 @@ namespace SalesForceAutomation.BO_Digits.en
             if (lstDatas.Rows.Count > 0)
             {
                 string name, code, shortname, total, used, creditdays, addres, watsap, contactperson, contactpersonAR,
-                    vat, phe, email, geo, area, cls, status, nameArabic, shortnameArabic, addressArabic, custype, recaptureGeo, AltHOCode, EnableInvoiceApproval, TRN, cusHead;
+                    vat, phe, email, geo, area, cls, status, nameArabic, shortnameArabic, addressArabic, custype, recaptureGeo, AltHOCode, EnableInvoiceApproval,
+                    TRN, cusHead, closeStatus;
                 name = lstDatas.Rows[0]["cus_Name"].ToString();
                 nameArabic = lstDatas.Rows[0]["cus_NameArabic"].ToString();
                 shortnameArabic = lstDatas.Rows[0]["cus_ShortNameArabic"].ToString();
@@ -3938,6 +3943,7 @@ namespace SalesForceAutomation.BO_Digits.en
                 EnableInvoiceApproval = lstDatas.Rows[0]["cus_EnableInvoiceApproval"].ToString();
                 cusHead = lstDatas.Rows[0]["cus_csh_ID"].ToString();
                 TRN = lstDatas.Rows[0]["TRN_Number"].ToString();
+                closeStatus= lstDatas.Rows[0]["cus_ClosedStatus"].ToString();
 
                 txtName.Text = name.ToString();
                 txtCode.Text = code.ToString();
@@ -3966,6 +3972,15 @@ namespace SalesForceAutomation.BO_Digits.en
                 EnableInvAppr.SelectedValue = EnableInvoiceApproval.ToString();
                 ddlCusHeader.SelectedValue = cusHead.ToString();
                 txtTRN.Text = TRN.ToString();
+                rblStatus.SelectedValue = closeStatus.ToString();
+                if (closeStatus == "Y")
+                {
+                    rblStatus.SelectedValue = "Y";
+                }
+                else
+                {
+                    rblStatus.ClearSelection(); 
+                }
 
                 if (custype == "NC")
                 {
